@@ -50,7 +50,7 @@ const InputArea: React.FC = () => {
                     onChange={(e) => setPrompt(e.target.value)}
                 />
                 <Button variant="primary" onClick={handleSubmit} disabled={loading}>
-                    {loading ? <Spinner size="sm" animation="border" /> : "Generate"}
+                    {loading ? "Loading..." : "Generate"}
                 </Button>
             </InputGroup>
 

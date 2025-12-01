@@ -1,36 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, { useState } from 'react'
 import './App.css'
-import InputArea from "./components/InputArea.tsx";
+import InputArea from "./components/InputArea/InputArea.tsx";
+import AuthButton from "./components/AuthButton/AuthButton";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 function App() {
-  const [count, setCount] = useState(0)
 
+    const handleSignup = () => {
+        console.log("Sign Up clicked");
+        // TODO: redirect to signup page or open modal
+    };
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-        <InputArea />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <>
+          <Sidebar></Sidebar>
+          <div className="container mt-5">
+              <h2>Welcome to PixelArtWebsite</h2>
+              <AuthButton/>
+          </div>
+          <InputArea/>
+      </>
   )
 }
 

@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useState} from "react";
 
 interface UIContextType {
     showDialog: boolean;
@@ -22,7 +22,7 @@ const UIContext = createContext<UIContextType>({
     setIsLoggedIn: () => {},
 });
 
-export function UIProvider({ children }) {
+export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [showDialog, setShowDialog] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
     const [hasGenerated, setHasGenerated] = useState(false);

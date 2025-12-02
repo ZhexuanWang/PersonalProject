@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Button, InputGroup, Spinner } from "react-bootstrap";
+import { Form, Button, InputGroup } from "react-bootstrap";
 import * as React from "react";
 import "./InputArea.css";
 import GeneratedDialog from "../GeneratedDialog/GeneratedDialog.tsx";

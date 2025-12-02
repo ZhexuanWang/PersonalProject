@@ -12,7 +12,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // For now, return a placeholder image
     res.status(200).json({
-        imageUrl: "https://placekitten.com/512/512",
+        imageUrl: "https://th.bing.com/th?id=ORMS.f0422e6a3f339b948fd6c1f0d8e3223e&pid=Wdp&w=268&h=140&qlt=90&c=1&rs=1&dpr=1&p=0",
         promptReceived: prompt,
     });
 }

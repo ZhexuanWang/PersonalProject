@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import "./AuthButton.css"
+import {useUIContext} from "../UIContext/UIContext"
 
 const AuthButton: React.FC = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    const {isLoggedIn, setIsLoggedIn} = useUIContext();
     const handleLogin = () => {
         setIsLoggedIn(true);
     };

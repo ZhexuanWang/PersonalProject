@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Form, Button, InputGroup, Spinner } from "react-bootstrap";
 import * as React from "react";
+import "./InputArea.css";
+import GeneratedDialog from "../GeneratedDialog/GeneratedDialog.tsx";
+import {useUIContext} from "../UIContext/UIContext"
 
 const InputArea: React.FC = () => {
     const [prompt, setPrompt] = useState("");
@@ -8,8 +11,11 @@ const InputArea: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async () => {
+    const { showDialog, setShowDialog, hasGenerated, setHasGenerated } = useUIContext();
+
+    const handleGenerate = async () => {
         if (!prompt.trim()) return;
+        setHasGenerated(true);
         setLoading(true);
         setError(null);
         setImageUrl(null);
@@ -24,13 +30,17 @@ const InputArea: React.FC = () => {
             if (!response.ok) throw new Error("Image generation failed");
 
             const data = await response.json();
+
             setImageUrl(data.imageUrl);
+            setShowDialog(true);   // open modal here
         } catch (err: any) {
-            setError(err.message);
+            setError(err.message || "Something went wrong");
+            setShowDialog(true);   // still open modal to show error
         } finally {
             setLoading(false);
         }
     };
+
 
     const handleDownload = () => {
         if (imageUrl) {
@@ -42,37 +52,29 @@ const InputArea: React.FC = () => {
     };
 
     return (
-        <div className="p-3 border rounded bg-light">
-            <InputGroup>
+        <div className={`input-area ${hasGenerated ? "bottom" : "center"}`}>
+            <InputGroup className="InputArea" style={{ display: "flex" }}>
                 <Form.Control
                     placeholder="Type a prompt..."
+                    style={{ width: "100%" }}
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                 />
-                <Button variant="primary" onClick={handleSubmit} disabled={loading}>
+                <Button variant="primary" onClick={handleGenerate} disabled={loading}>
                     {loading ? "Loading..." : "Generate"}
                 </Button>
             </InputGroup>
 
             {error && <div className="text-danger mt-2">{error}</div>}
 
-            {imageUrl && (
-                <div className="mt-3 text-center">
-                    <img src={imageUrl} alt="Generated" className="img-fluid rounded shadow" />
-                    <div className="mt-2">
-                        <Button variant="success" onClick={handleDownload}>
-                            Download
-                        </Button>
-                        <Button
-                            variant="outline-secondary"
-                            className="ms-2"
-                            onClick={() => setImageUrl(null)}
-                        >
-                            Clear
-                        </Button>
-                    </div>
-                </div>
-            )}
+            <GeneratedDialog
+                show={showDialog}
+                imageUrl={imageUrl}
+                error={error}
+                onClose={() => setShowDialog(false)}
+                onDownload={handleDownload}
+                onClear={() => setImageUrl(null)}
+            />
         </div>
     );
 };

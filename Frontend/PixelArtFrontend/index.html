@@ -9,5 +9,30 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      let x = 50, y = 50; // current position
+      let targetX = 50, targetY = 50;
+
+      function pickNewTarget() {
+        targetX = Math.random() * 100;
+        targetY = Math.random() * 100;
+        setTimeout(pickNewTarget, 5000); // pick new target every 5s
+      }
+
+      function animate() {
+        // interpolate toward target
+        x += (targetX - x) * 0.005;
+        y += (targetY - y) * 0.005;
+
+        document.body.style.background =
+                `radial-gradient(circle at ${x}% ${y}%, white 0%, gray 3%, black 100%)`;
+
+        requestAnimationFrame(animate);
+      }
+
+      pickNewTarget();
+      animate();
+    </script>
+
   </body>
 </html>

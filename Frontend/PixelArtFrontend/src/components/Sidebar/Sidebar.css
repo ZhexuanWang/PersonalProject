@@ -28,3 +28,7 @@
     padding: 1rem;
     flex-grow: 1;
 }
+
+.sidebar.hidden {
+    transform: translateX(-100%); /* slide out completely */
+}

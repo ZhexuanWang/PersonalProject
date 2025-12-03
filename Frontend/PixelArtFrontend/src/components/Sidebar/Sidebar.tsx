@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "./Sidebar.css";
 import AuthButton from "../AuthButton/AuthButton.tsx";
 
@@ -25,11 +25,9 @@ const Sidebar: React.FC = () => {
 
     return (
         <>
-            {!show && (
-                <button className="open-btn" onClick={() => setShow(true)}>
-                    Open Sidebar
-                </button>
-            )}
+            <button className="open-btn" onClick={() => setShow(true)}>
+                Open Sidebar
+            </button>
 
             <div className={`sidebar ${show ? "open" : ""}`}>
                 <div className="sidebar-header">
@@ -40,7 +38,7 @@ const Sidebar: React.FC = () => {
                 </div>
                 <div className="sidebar-body">
                     {!isLoggedIn ? (
-                        <AuthButton />
+                        <AuthButton/>
                     ) : (
                         <>
                             <button className="btn success" onClick={handleCreateConversation}>
@@ -61,7 +59,7 @@ const Sidebar: React.FC = () => {
                 </div>
             </div>
 
-            {show && <div className="overlay" onClick={() => setShow(false)} />}
+            {show && <div className="overlay" onClick={() => setShow(false)}/>}
         </>
     );
 };

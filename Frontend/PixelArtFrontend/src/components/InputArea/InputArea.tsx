@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import * as React from "react";
 import "./InputArea.css";
@@ -10,11 +10,12 @@ const InputArea: React.FC = () => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
-    const { showDialog, setShowDialog, hasGenerated, setHasGenerated } = useUIContext();
+    const { showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef } = useUIContext();
 
     const handleGenerate = async () => {
         if (!prompt.trim()) return;
+        requestTokenRef.current += 1;
+        const token = requestTokenRef.current;
         setHasGenerated(true);
         setLoading(true);
         setError(null);
@@ -31,11 +32,15 @@ const InputArea: React.FC = () => {
 
             const data = await response.json();
 
-            setImageUrl(data.imageUrl);
-            setShowDialog(true);   // open modal here
+            if (token === requestTokenRef.current) {
+                setImageUrl(data.imageUrl);
+                setShowDialog(true);
+            }
         } catch (err: any) {
-            setError(err.message || "Something went wrong");
-            setShowDialog(true);   // still open modal to show error
+            if (token === requestTokenRef.current) {
+                setError(err.message || "Something went wrong");
+                setShowDialog(true);
+            }
         } finally {
             setLoading(false);
         }

@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useRef, useState} from "react";
 
 interface UIContextType {
     showDialog: boolean;
@@ -9,27 +9,45 @@ interface UIContextType {
     setHasGenerated: React.Dispatch<React.SetStateAction<boolean>>;
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+    requestTokenRef: React.RefObject<number>; // ✅ add this
 }
 
 const UIContext = createContext<UIContextType>({
     showDialog: false,
-    setShowDialog: () => {},
+    setShowDialog: () => {
+    },
     showSidebar: false,
-    setShowSidebar: () => {},
+    setShowSidebar: () => {
+    },
     hasGenerated: false,
-    setHasGenerated: () => {},
+    setHasGenerated: () => {
+    },
     isLoggedIn: false,
-    setIsLoggedIn: () => {},
+    setIsLoggedIn: () => {
+    },
+    requestTokenRef: {current:0},
 });
 
-export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
     const [showDialog, setShowDialog] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
     const [hasGenerated, setHasGenerated] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const requestTokenRef = useRef(0);
+
     return (
-        <UIContext.Provider value={{ showDialog, setShowDialog, showSidebar, setShowSidebar, hasGenerated, setHasGenerated, isLoggedIn, setIsLoggedIn }}>
+        <UIContext.Provider value={{
+            showDialog,
+            setShowDialog,
+            showSidebar,
+            setShowSidebar,
+            hasGenerated,
+            setHasGenerated,
+            isLoggedIn,
+            setIsLoggedIn,
+            requestTokenRef,
+        }}>
             {children}
         </UIContext.Provider>
     );

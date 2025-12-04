@@ -9,7 +9,9 @@ interface UIContextType {
     setHasGenerated: React.Dispatch<React.SetStateAction<boolean>>;
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-    requestTokenRef: React.RefObject<number>; // ✅ add this
+    requestTokenRef: React.RefObject<number>;
+    conversations: string[],
+    setConversations: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const UIContext = createContext<UIContextType>({
@@ -25,7 +27,10 @@ const UIContext = createContext<UIContextType>({
     isLoggedIn: false,
     setIsLoggedIn: () => {
     },
-    requestTokenRef: {current:0},
+    requestTokenRef: {current: 0},
+    conversations: [],
+    setConversations: () => {
+    },
 });
 
 export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
@@ -33,6 +38,7 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) 
     const [showSidebar, setShowSidebar] = useState(false);
     const [hasGenerated, setHasGenerated] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [conversations, setConversations] = useState<string[]>([]);
 
     const requestTokenRef = useRef(0);
 
@@ -47,6 +53,8 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) 
             isLoggedIn,
             setIsLoggedIn,
             requestTokenRef,
+            conversations,
+            setConversations
         }}>
             {children}
         </UIContext.Provider>

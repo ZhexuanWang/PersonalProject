@@ -16,7 +16,12 @@
 }
 
 .btn.success {
-    background: #2ecc71;
+    background: rgb(57, 57, 57);
+    border: white 1px solid;
+}
+
+.btn.success:hover {
+    border: yellow 1px solid;
 }
 
 .message {

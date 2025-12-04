@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import { Button } from "react-bootstrap";
 import { useUIContext } from "../UIContext/UIContext";
 
 const NewDialogButton: React.FC = () => {
+
     const {
         setShowDialog,
         setShowSidebar,
         setHasGenerated,
-        requestTokenRef
+        requestTokenRef,
+        setConversations
     } = useUIContext();
 
     const handleNewDialog = () => {
@@ -15,6 +17,10 @@ const NewDialogButton: React.FC = () => {
         setShowSidebar(false);
         setHasGenerated(false);
         requestTokenRef.current += 1;
+        setConversations((prev) => [
+            ...prev,
+            `Conversation ${prev.length + 1}`,
+        ]);
     };
 
     return (

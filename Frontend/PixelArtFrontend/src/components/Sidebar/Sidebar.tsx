@@ -1,20 +1,22 @@
 import React, {useState} from "react";
 import "./Sidebar.css";
 import AuthButton from "../AuthButton/AuthButton.tsx";
+import {useUIContext} from "../UIContext/UIContext.tsx";
+
+export const SidebarButton: React.FC = () => {
+    const {setShowSidebar} = useUIContext();
+
+    return (
+        <>
+            <button className="" onClick={() => setShowSidebar(true)}>
+                Open Sidebar
+            </button>
+        </>
+    );
+}
 
 const Sidebar: React.FC = () => {
-    const [show, setShow] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [conversations, setConversations] = useState<string[]>([]);
-
-    const handleLogin = () => {
-        setIsLoggedIn(true);
-        setConversations(["Conversation 1", "Conversation 2"]);
-    };
-
-    const handleRegister = () => {
-        alert("Register clicked");
-    };
+    const {setShowSidebar, showSidebar, isLoggedIn, conversations, setConversations} = useUIContext();
 
     const handleCreateConversation = () => {
         setConversations((prev) => [
@@ -25,20 +27,18 @@ const Sidebar: React.FC = () => {
 
     return (
         <>
-            <button className="open-btn" onClick={() => setShow(true)}>
-                Open Sidebar
-            </button>
-
-            <div className={`sidebar ${show ? "open" : ""}`}>
+            <div className={`sidebar ${showSidebar ? "open" : ""}`}>
                 <div className="sidebar-header">
                     <h2>Copilot‑Style Sidebar</h2>
-                    <button className="close-btn" onClick={() => setShow(false)}>
+                    <button className="close-btn" onClick={() => setShowSidebar(false)}>
                         ×
                     </button>
                 </div>
                 <div className="sidebar-body">
                     {!isLoggedIn ? (
-                        <AuthButton/>
+                        <>
+                            <div>Login to save your dialogs.</div>
+                        </>
                     ) : (
                         <>
                             <button className="btn success" onClick={handleCreateConversation}>
@@ -57,9 +57,10 @@ const Sidebar: React.FC = () => {
                         </>
                     )}
                 </div>
+                <AuthButton/>
             </div>
 
-            {show && <div className="overlay" onClick={() => setShow(false)}/>}
+            {showSidebar && <div className="overlay" onClick={() => setShowSidebar(false)}/>}
         </>
     );
 };

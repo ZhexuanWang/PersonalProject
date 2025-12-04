@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import "./AuthButton.css"
 import {useUIContext} from "../UIContext/UIContext"
+import LogoutButton from "../LogoutButton/LogoutButton.tsx";
 
 const AuthButton: React.FC = () => {
     const {isLoggedIn, setIsLoggedIn} = useUIContext();
@@ -14,15 +15,17 @@ const AuthButton: React.FC = () => {
 
     return (
         <>
-            <p className="message">
-                Log in or register to save your conversation history.
-            </p>
-            <button className="btn" onClick={handleLogin}>
-                Log In
-            </button>
-            <button className="btn outline" onClick={handleRegister}>
-                Register
-            </button>
+            {!isLoggedIn ? (
+                <>
+                    <button className="btn outline" onClick={handleRegister}>
+                        Register
+                    </button>
+                    <button className="btn" onClick={handleLogin}>
+                        Log In
+                    </button>
+                </>
+            ) : (<LogoutButton/>
+            )}
         </>
     );
 };

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { Form, Button, InputGroup } from "react-bootstrap";
+import {Form, Button, InputGroup} from "react-bootstrap";
 import * as React from "react";
 import "./InputArea.css";
 import GeneratedDialog from "../GeneratedDialog/GeneratedDialog.tsx";
@@ -10,7 +10,7 @@ const InputArea: React.FC = () => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const { showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef } = useUIContext();
+    const {showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef} = useUIContext();
 
     const handleGenerate = async () => {
         if (!prompt.trim()) return;
@@ -24,8 +24,8 @@ const InputArea: React.FC = () => {
         try {
             const response = await fetch("/api/generate", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt }),
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({prompt}),
             });
 
             if (!response.ok) throw new Error("Image generation failed");
@@ -57,29 +57,34 @@ const InputArea: React.FC = () => {
     };
 
     return (
-        <div className={`input-area ${hasGenerated ? "bottom" : "center"}`}>
-            <InputGroup className="InputArea" style={{ display: "flex" }}>
-                <Form.Control
-                    placeholder="Type a prompt..."
-                    style={{ width: "100%" }}
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
+        <div className={`input-wrapper ${hasGenerated ? "bottom" : "center"}`}>
+            <div className={`guiding-text  ${hasGenerated ? "bottom" : "center"}`}>
+                What can I help you today?
+            </div>
+            <div className={`input-area`}>
+                <InputGroup className="InputArea" style={{display: "flex"}}>
+                    <Form.Control
+                        placeholder="Type a prompt..."
+                        style={{width: "100%"}}
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                    />
+                    <Button variant="primary" onClick={handleGenerate} disabled={loading}>
+                        {loading ? "Loading..." : "Generate"}
+                    </Button>
+                </InputGroup>
+
+                {error && <div className="text-danger mt-2">{error}</div>}
+
+                <GeneratedDialog
+                    show={showDialog}
+                    imageUrl={imageUrl}
+                    error={error}
+                    onClose={() => setShowDialog(false)}
+                    onDownload={handleDownload}
+                    onClear={() => setImageUrl(null)}
                 />
-                <Button variant="primary" onClick={handleGenerate} disabled={loading}>
-                    {loading ? "Loading..." : "Generate"}
-                </Button>
-            </InputGroup>
-
-            {error && <div className="text-danger mt-2">{error}</div>}
-
-            <GeneratedDialog
-                show={showDialog}
-                imageUrl={imageUrl}
-                error={error}
-                onClose={() => setShowDialog(false)}
-                onDownload={handleDownload}
-                onClear={() => setImageUrl(null)}
-            />
+            </div>
         </div>
     );
 };

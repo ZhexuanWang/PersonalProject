@@ -2,16 +2,33 @@ import React, {useState} from "react";
 import "./AuthButton.css"
 import {useUIContext} from "../UIContext/UIContext"
 import LogoutButton from "../LogoutButton/LogoutButton.tsx";
+import { useAuth } from "./../../hooks/useAuth";
 
 const AuthButton: React.FC = () => {
     const {isLoggedIn, setIsLoggedIn} = useUIContext();
-    const handleLogin = () => {
-        setIsLoggedIn(true);
-    };
+    const { login, register } = useAuth();
 
-    const handleRegister = () => {
-        alert("Register clicked");
-    };
+
+    async function handleLogin() {
+        try {
+            await login("test@example.com", "mypassword"); // call the hook function
+            alert("Logged in!");
+            setIsLoggedIn(true);
+        } catch (err) {
+            console.error(err);
+            alert("Login failed");
+        }
+    }
+
+    async function handleRegister() {
+        try {
+            const user = await register("test@example.com", "mypassword");
+            alert(`Registered user: ${user.email}`);
+        } catch (err) {
+            console.error(err);
+            alert("Registration failed");
+        }
+    }
 
     return (
         <>

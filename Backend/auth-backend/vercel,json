@@ -2,5 +2,6 @@
   "builds": [
     { "src": "src/index.ts", "use": "@vercel/node" }
   ],
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+    "include": ["src"]
 }

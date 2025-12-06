@@ -12,9 +12,11 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 //app.use(requireAuth);   // 👈 this would protect every route
 app.get("/", (req, res) => {
+    console.log("Root route hit");
     res.send("Hello from Express on Vercel!");
 });
 app.get("/protected", auth_middleware_1.requireAuth, (req, res) => {
+    console.log("Protected");
     res.json({ message: `Hello user ${res.locals.userId}` });
 });
 // Export for Vercel

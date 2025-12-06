@@ -1,19 +1,31 @@
-import * as jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+
+interface AuthPayload extends JwtPayload {
+    userId: string;
+}
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const header = req.headers.authorization;
+
+    // ✅ Check for header
     if (!header || !header.startsWith("Bearer ")) {
         return res.status(401).json({ message: "Missing token" });
     }
 
-    const token = header.slice(7);
+    const token = header.substring(7); // now safe
 
     try {
-        const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as { userId: string };
-        res.locals.userId = payload.userId;   // ✅ safe place to store
-        next();
+        // ✅ Verify token
+        const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET!) as AuthPayload;
+
+        // ✅ Store userId in res.locals
+        res.locals.userId = payload.userId;
+
+        // Continue to next middleware/route
+        return next();
     } catch (err) {
-        return res.status(401).json({ message: "Invalid token" });
+        console.error("JWT verification failed:", err);
+        return res.status(401).json({ message: "Invalid or expired token" });
     }
 }

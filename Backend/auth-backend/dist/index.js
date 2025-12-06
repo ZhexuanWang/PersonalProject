@@ -6,11 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const serverless_http_1 = __importDefault(require("serverless-http"));
 const backendApp_1 = __importDefault(require("./backendApp"));
+const auth_middleware_1 = require("./auth.middleware");
 const app = (0, express_1.default)();
 // Middleware & routes
 app.use(express_1.default.json());
+//app.use(requireAuth);   // 👈 this would protect every route
 app.get("/", (req, res) => {
     res.send("Hello from Express on Vercel!");
+});
+app.get("/protected", auth_middleware_1.requireAuth, (req, res) => {
+    res.json({ message: `Hello user ${res.locals.userId}` });
 });
 // Export for Vercel
 module.exports = (0, serverless_http_1.default)(app);

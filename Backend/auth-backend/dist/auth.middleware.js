@@ -43,7 +43,7 @@ function requireAuth(req, res, next) {
     const token = header.slice(7);
     try {
         const payload = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-        req.userId = payload.userId;
+        res.locals.userId = payload.userId; // ✅ safe place to store
         next();
     }
     catch (err) {

@@ -1,13 +1,19 @@
 import express from "express";
 import serverless from "serverless-http";
 import backendApp from "./backendApp";
+import {requireAuth} from "./auth.middleware";
 
 const app = express();
 
 // Middleware & routes
 app.use(express.json());
+//app.use(requireAuth);   // 👈 this would protect every route
 app.get("/", (req, res) => {
     res.send("Hello from Express on Vercel!");
+});
+
+app.get("/protected", requireAuth, (req, res) => {
+    res.json({ message: `Hello user ${res.locals.userId}` });
 });
 
 // Export for Vercel

@@ -4,8 +4,8 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import serverless from "serverless-http";
-import { register, login, refresh, logout } from "./auth.controller";
-import { requireAuth } from "./auth.middleware";
+import { register, login, refresh, logout } from "../auth.controller";
+import { requireAuth } from "../auth.middleware";
 
 dotenv.config();
 

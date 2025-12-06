@@ -9,8 +9,8 @@ const helmet_1 = __importDefault(require("helmet"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const serverless_http_1 = __importDefault(require("serverless-http"));
-const auth_controller_1 = require("./auth.controller");
-const auth_middleware_1 = require("./auth.middleware");
+const auth_controller_1 = require("../auth.controller");
+const auth_middleware_1 = require("../auth.middleware");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Security & middleware

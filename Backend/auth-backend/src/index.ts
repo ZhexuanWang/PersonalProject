@@ -22,7 +22,16 @@ app.use(cors({
 
 // Public route
 app.get("/", (req, res) => {
-    res.send("Backend is running!");
+    res.send(`    
+    <!doctype html>
+    <html lang="en">
+      <head><title>Backend</title></head>
+      <body>
+        <h1>Backend is running!</h1>
+        <p>This is your Express app deployed on Vercel.</p>
+      </body>
+    </html>`);
+    
 });
 
 // Auth routes

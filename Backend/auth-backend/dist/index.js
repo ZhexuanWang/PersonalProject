@@ -23,7 +23,15 @@ app.use((0, cors_1.default)({
 }));
 // Public route
 app.get("/", (req, res) => {
-    res.send("Backend is running!");
+    res.send(`    
+    <!doctype html>
+    <html lang="en">
+      <head><title>Backend</title></head>
+      <body>
+        <h1>Backend is running!</h1>
+        <p>This is your Express app deployed on Vercel.</p>
+      </body>
+    </html>`);
 });
 // Auth routes
 app.post("/auth/register", auth_controller_1.register);

@@ -4,7 +4,6 @@
     // File Layout
     // "rootDir": "./src",
     // "outDir": "./dist",
-    "include": ["src/**/*"],
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "CommonJS",
@@ -43,5 +42,6 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "include": ["src/**/*"]
 }

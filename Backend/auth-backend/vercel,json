@@ -1,7 +1,15 @@
 {
+  "version": 2,
   "builds": [
-    { "src": "api/index.ts", "use": "@vercel/node" }
+    {
+      "src": "api/index.ts",  // ← 直接使用 .ts 文件
+      "use": "@vercel/node"
+    }
   ],
-  "outputDirectory": "dist",
-    "include": ["src"]
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.ts"
+    }
+  ]
 }

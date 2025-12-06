@@ -1,6 +1,6 @@
 import express from "express";
 import serverless from "serverless-http";
-import backendApp from "../backendApp";
+import backendApp from "./backendApp";
 
 const app = express();
 

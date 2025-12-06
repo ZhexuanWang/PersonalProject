@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: import.meta.env.DEV
+        ? "http://localhost:5000"
+        : "https://personal-project-backend-masy.onrender.com",
     withCredentials: true, // allows cookies (refresh_token)
 });
 

@@ -1,15 +1,11 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "builds": [
     {
-      "src": "api/index.ts",  // ← 直接使用 .ts 文件
+      "src": "dist/api/index.js",
       "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.ts"
     }
   ]
 }

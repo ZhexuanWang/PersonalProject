@@ -25,10 +25,12 @@ app.use(
             },
         },
     })
-);app.use(express.json());
+);
+app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:5173", "https://personal-project-frontend-m49cq2zx5-zhexuanwangs-projects.vercel.app/"],
+    origin: ["http://localhost:3000", "http://localhost:5173", 'https://personal-project-frontend-*.vercel.app',
+        'https://personal-project-frontend.vercel.app'],
     credentials: true
 }));
 
@@ -50,56 +52,56 @@ function setRefreshCookie(res: Response, token: string) {
 function requireAuth(req: Request, res: Response, next: NextFunction) {
     const auth = req.headers.authorization;
     if (!auth || !auth.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json({error: "Unauthorized"});
     }
     try {
         const token = auth.slice(7);
-         // contains sub + email
+        // contains sub + email
         (req as any).user = verifyAccessToken(token);
         next();
     } catch {
-        res.status(401).json({ error: "Invalid token" });
+        res.status(401).json({error: "Invalid token"});
     }
 }
 
 // POST /auth/register
 app.post("/auth/register", async (req: Request, res: Response) => {
-    const { email, password, name } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Email and password required" });
+    const {email, password, name} = req.body;
+    if (!email || !password) return res.status(400).json({error: "Email and password required"});
 
     const existing = findUserByEmail(email);
-    if (existing) return res.status(409).json({ error: "Email already registered" });
+    if (existing) return res.status(409).json({error: "Email already registered"});
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = createUser({ id: uuid(), email, name, passwordHash, googleLinked: false });
+    const user = createUser({id: uuid(), email, name, passwordHash, googleLinked: false});
 
     const access = signAccessToken(user.id, user.email);
     const refresh = signRefreshToken(user.id, user.email);
     setRefreshCookie(res, refresh);
 
-    res.json({ accessToken: access, user: { id: user.id, email: user.email, name: user.name } });
+    res.json({accessToken: access, user: {id: user.id, email: user.email, name: user.name}});
 });
 
 // POST /auth/login
 app.post("/auth/login", async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const {email, password} = req.body;
     const user = findUserByEmail(email);
-    if (!user || !user.passwordHash) return res.status(401).json({ error: "Invalid credentials" });
+    if (!user || !user.passwordHash) return res.status(401).json({error: "Invalid credentials"});
 
     const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return res.status(401).json({ error: "Invalid credentials" });
+    if (!ok) return res.status(401).json({error: "Invalid credentials"});
 
     const access = signAccessToken(user.id, user.email);
     const refresh = signRefreshToken(user.id, user.email);
     setRefreshCookie(res, refresh);
 
-    res.json({ accessToken: access, user: { id: user.id, email: user.email, name: user.name } });
+    res.json({accessToken: access, user: {id: user.id, email: user.email, name: user.name}});
 });
 
 // POST /auth/google
 app.post("/auth/google", async (req: Request, res: Response) => {
-    const { idToken } = req.body;
-    if (!idToken) return res.status(400).json({ error: "idToken required" });
+    const {idToken} = req.body;
+    if (!idToken) return res.status(400).json({error: "idToken required"});
 
     try {
         const ticket = await googleClient.verifyIdToken({
@@ -107,7 +109,7 @@ app.post("/auth/google", async (req: Request, res: Response) => {
             audience: process.env.GOOGLE_CLIENT_ID as string
         });
         const payload = ticket.getPayload();
-        if (!payload || !payload.email) return res.status(400).json({ error: "Google email missing" });
+        if (!payload || !payload.email) return res.status(400).json({error: "Google email missing"});
 
         let user = findUserByEmail(payload.email);
         if (!user) {
@@ -116,10 +118,10 @@ app.post("/auth/google", async (req: Request, res: Response) => {
                 id: uuid(),
                 email: payload.email,
                 googleLinked: true,
-                ...(payload.name ? { name: payload.name } : {})
+                ...(payload.name ? {name: payload.name} : {})
             });
         } else {
-            if (!user.googleLinked) user = updateUser(user.id, { googleLinked: true })!;
+            if (!user.googleLinked) user = updateUser(user.id, {googleLinked: true})!;
         }
 
         const access = signAccessToken(user.id, user.email);
@@ -128,25 +130,25 @@ app.post("/auth/google", async (req: Request, res: Response) => {
 
         res.json({
             accessToken: access,
-            user: { id: user.id, email: user.email, name: user.name },
+            user: {id: user.id, email: user.email, name: user.name},
             needsPassword: !user.passwordHash
         });
     } catch {
-        res.status(401).json({ error: "Invalid Google token" });
+        res.status(401).json({error: "Invalid Google token"});
     }
 });
 
 // POST /auth/set-password
 app.post("/auth/set-password", requireAuth, async (req: Request, res: Response) => {
-    const { password } = req.body;
-    if (!password) return res.status(400).json({ error: "Password required" });
+    const {password} = req.body;
+    if (!password) return res.status(400).json({error: "Password required"});
 
-    const { sub } = (req as any).user;
+    const {sub} = (req as any).user;
     const user = findUserById(sub);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) return res.status(404).json({error: "User not found"});
 
     const hash = await bcrypt.hash(password, 10);
-    const updated = updateUser(user.id, { passwordHash: hash })!;
+    const updated = updateUser(user.id, {passwordHash: hash})!;
     const accessToken = signAccessToken(updated.id, updated.email);
 
     res.json({
@@ -162,27 +164,27 @@ app.post("/auth/set-password", requireAuth, async (req: Request, res: Response) 
 // POST /auth/refresh
 app.post("/auth/refresh", (req: Request, res: Response) => {
     const rt = req.cookies["refresh_token"];
-    if (!rt) return res.status(401).json({ error: "No refresh token" });
+    if (!rt) return res.status(401).json({error: "No refresh token"});
     try {
         const payload = verifyRefreshToken(rt);
         const access = signAccessToken(payload.sub, payload.email);
-        res.json({ accessToken: access });
+        res.json({accessToken: access});
     } catch {
-        res.status(401).json({ error: "Invalid refresh token" });
+        res.status(401).json({error: "Invalid refresh token"});
     }
 });
 
 // POST /auth/logout
 app.post("/auth/logout", (_req: Request, res: Response) => {
-    res.clearCookie("refresh_token", { path: "/auth/refresh" });
-    res.json({ ok: true });
+    res.clearCookie("refresh_token", {path: "/auth/refresh"});
+    res.json({ok: true});
 });
 
 // GET /me
 app.get("/me", requireAuth, (req: Request, res: Response) => {
-    const { sub } = (req as any).user;
+    const {sub} = (req as any).user;
     const user = findUserById(sub);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) return res.status(404).json({error: "User not found"});
     res.json({
         id: user!.id,
         email: user!.email,

@@ -5,29 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="379d524d-72c4-4f06-a054-0deef26d4f39" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/AuthArea/AuthArea.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GoogleLoginButton/GoogleLoginButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/contexts/AuthContext/AuthContext.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/types/global.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-backend/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/src/api/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-backend/src/auth.middleware.ts" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/src/auth.middleware.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-backend/test/login.txt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/test/login.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-backend/test/register.txt" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/test/register.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/api/api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/AuthButton/AuthButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/AuthButton/AuthButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/GeneratedDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/GeneratedDialog.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/LogoutButton/LogoutButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/LogoutButton/LogoutButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/NewDialogButton/NewDialogButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/NewDialogButton/NewDialogButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Profile/Profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Profile/Profile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Ribben/Ribben.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Ribben/Ribben.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/UIContext/UIContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/contexts/UIContext/UIContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/hooks/useAuth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/hooks/useAuth.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/main.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -128,7 +107,7 @@
       <workItem from="1765131100396" duration="55000" />
       <workItem from="1765131167063" duration="10000" />
       <workItem from="1765131270899" duration="868000" />
-      <workItem from="1765132164127" duration="19062000" />
+      <workItem from="1765132164127" duration="19671000" />
     </task>
     <servers />
   </component>

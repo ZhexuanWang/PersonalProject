@@ -13,7 +13,7 @@ interface UIContextType {
     conversations: string[],
     setConversations: React.Dispatch<React.SetStateAction<string[]>>;
     mode: string;
-    setMode: React.Dispatch<React.SetStateAction<string>>;
+    setMode: React.Dispatch<React.SetStateAction<"none" | "login" | "register">>;
 }
 
 const UIContext = createContext<UIContextType>({

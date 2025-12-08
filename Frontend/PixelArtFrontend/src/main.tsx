@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import {UIProvider} from "./contexts/UIContext/UIContext.tsx";
 import {BrowserRouter} from "react-router-dom";
+import React from "react";
 
 const container = document.getElementById('root');
 if (!container) {

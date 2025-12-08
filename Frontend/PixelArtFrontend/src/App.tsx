@@ -11,7 +11,7 @@ function App() {
     return (
         <>
             <Routes>
-                <Route path="/" element={<></>} /> 
+                <Route path="/" element={<></>} />
                 <Route path="/profile" element={<Profile />}></Route>
             </Routes>
             <Ribbon/>

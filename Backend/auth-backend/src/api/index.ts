@@ -1,15 +1,14 @@
 // src/api/index.ts
 import "dotenv/config";
-import express, { Request, Response, NextFunction } from "express";
+import express, {NextFunction, Request, Response} from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcrypt";
-import { OAuth2Client } from "google-auth-library";
-import { v4 as uuid } from "uuid";
-
-import { createUser, findUserByEmail, findUserById, updateUser, User } from "../store";
-import { signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken } from "../auth.util";
+import {OAuth2Client} from "google-auth-library";
+import {v4 as uuid} from "uuid";
+import {createUser, findUserByEmail, findUserById, updateUser} from "../store";
+import {signAccessToken, signRefreshToken, verifyAccessToken, verifyRefreshToken} from "../auth.util";
 
 const app = express();
 if (!process.env.GOOGLE_CLIENT_ID) {
@@ -29,7 +28,7 @@ app.use(
 );app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ["http://localhost:3000", "https://your-frontend.vercel.app"],
+    origin: ["http://localhost:3000", "http://localhost:5173", "https://your-frontend.vercel.app"],
     credentials: true
 }));
 
@@ -55,8 +54,8 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
     try {
         const token = auth.slice(7);
-        const payload = verifyAccessToken(token); // contains sub + email
-        (req as any).user = payload;
+         // contains sub + email
+        (req as any).user = verifyAccessToken(token);
         next();
     } catch {
         res.status(401).json({ error: "Invalid token" });
@@ -185,11 +184,11 @@ app.get("/me", requireAuth, (req: Request, res: Response) => {
     const user = findUserById(sub);
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        googleLinked: user.googleLinked,
-        hasPassword: !!user.passwordHash
+        id: user!.id,
+        email: user!.email,
+        name: user!.name,
+        googleLinked: user!.googleLinked,
+        hasPassword: !!user!.passwordHash
     });
 });
 

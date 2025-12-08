@@ -13,12 +13,12 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 0
 Vary: Origin
 Access-Control-Allow-Credentials: true
-Set-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNTJjYjkzMy1iMDZiLTQ4MWYtYmQ5OS0yZThiNDg2YzQ1YjgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUxODg0MDIsImV4cCI6MTc2NTc5MzIwMn0.K9Wx4337ijpYbW7KIA9OJPCE-V_TZ47PV2l85AWl4EE; Path=/auth/refresh; HttpOnly; SameSite=Lax
+Set-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOGRhYzM5Ny0wYjAzLTQ1ZDEtODRhZi00NjRiN2NjODQ0ZWMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUyMDg1MzcsImV4cCI6MTc2NTgxMzMzN30.PQFgBguh9qa7d8rnBZLyVL6Rdo1CGWgqIgyj6bO9VHU; Path=/auth/refresh; HttpOnly; SameSite=Lax
 Content-Type: application/json; charset=utf-8
 Content-Length: 338
-ETag: W/"152-CCe3Sd6fPViDEjhfnGfz96N+0SU"
-Date: Mon, 08 Dec 2025 10:06:42 GMT
+ETag: W/"152-8Q983+mm9GczGNencg0V2IQx/A4"
+Date: Mon, 08 Dec 2025 15:42:17 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNTJjYjkzMy1iMDZiLTQ4MWYtYmQ5OS0yZThiNDg2YzQ1YjgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUxODg0MDIsImV4cCI6MTc2NTE4OTMwMn0.5-OaE-gPn-evU4Lz4hZj2gfij0V3-B7BrsXei_mrwfE","user":{"id":"b52cb933-b06b-481f-bd99-2e8b486c45b8","email":"test@example.com","name":"Tester"}}
+{"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOGRhYzM5Ny0wYjAzLTQ1ZDEtODRhZi00NjRiN2NjODQ0ZWMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUyMDg1MzcsImV4cCI6MTc2NTIwOTQzN30.CMOobNhUBk_z8ECigbygWeKqja5DV49-WHK6YozrPFo","user":{"id":"18dac397-0b03-45d1-84af-464b7cc844ec","email":"test@example.com","name":"Tester"}}

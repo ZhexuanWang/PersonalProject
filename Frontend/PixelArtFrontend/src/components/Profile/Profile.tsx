@@ -1,13 +1,34 @@
-import { useEffect } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import React, { useState, useEffect, useContext } from "react";
+import api from "../../api/api";
 
-export default function Profile() {
-    const { user, getProfile } = useAuth();
+interface User {
+    id: string;
+    email: string;
+    name?: string;
+}
+
+function Profile() {
+    const [profile, setProfile] = useState<User | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        getProfile();
+        api
+            .get("/me")
+            .then((res) => setProfile(res.data))
+            .catch((err) => {
+                setError("Failed to load profile");
+                console.error(err);
+            });
     }, []);
 
-    if (!user) return <p>Loading...</p>;
-    return <p>Welcome {user.email}, your ID is {user.userId}</p>;
-}
+    if (error) return <p>{error}</p>;
+    if (!profile) return <p>Loading...</p>;
+
+    return (
+        <div>
+            <h2>Hello {profile.name ?? profile.email}</h2>
+            <p>User ID: {profile.id}</p>
+        </div>
+    );}
+
+export default Profile;

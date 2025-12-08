@@ -1,23 +1,23 @@
 import React from 'react'
 import './App.css'
 import InputArea from "./components/InputArea/InputArea.tsx";
-import Sidebar from "./components/Sidebar/Sidebar.tsx";
-import NewDialogButton from "./components/NewDialogButton/NewDialogButton.tsx";
-import WebsiteIcon from "./components/WebsiteIcon/WebsiteIcon.tsx";
-import { BrowserRouter } from "react-router-dom";
-import LogoutButton from "./components/LogoutButton/LogoutButton.tsx";
-import Ribben from "./components/Ribben/Ribben.tsx";
+import Ribbon from "./components/Ribbon/Ribbon.tsx";
+import AuthArea from "./components/AuthArea/AuthArea.tsx";
+import {Route, Routes} from "react-router-dom";
+import Profile from "./components/Profile/Profile.tsx";
 
 function App() {
 
-  return (
-      <>
-          <BrowserRouter>
-            <Ribben />
-          </BrowserRouter>
-          <InputArea/>
-      </>
-  )
+    return (
+        <>
+            <Routes>
+                <Route path="/profile" element={<Profile />}></Route>
+            </Routes>
+            <Ribbon/>
+            <AuthArea/>
+            <InputArea/>
+        </>
+    )
 }
 
 export default App

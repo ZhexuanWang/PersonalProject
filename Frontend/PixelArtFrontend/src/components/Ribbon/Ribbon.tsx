@@ -1,7 +1,6 @@
 import React from "react";
-import { useUIContext } from "../UIContext/UIContext";
-import "./Ribben.css"
-import AuthButton from "../AuthButton/AuthButton.tsx";
+import { useUIContext } from "../../contexts/UIContext/UIContext";
+import "./Ribbon.css"
 import Sidebar from "../Sidebar/Sidebar.tsx";
 import NewDialogButton from "../NewDialogButton/NewDialogButton.tsx";
 import {SidebarButton} from "../Sidebar/Sidebar.tsx";
@@ -14,7 +13,6 @@ const Ribbon: React.FC = () => {
     return (
         <>
             <div className={`ribbon ${showSidebar ? "faded" : ""}`}>
-                <AuthButton />
                 <NewDialogButton />
                 <SidebarButton />
             </div>

@@ -12,6 +12,8 @@ interface UIContextType {
     requestTokenRef: React.RefObject<number>;
     conversations: string[],
     setConversations: React.Dispatch<React.SetStateAction<string[]>>;
+    mode: string;
+    setMode: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const UIContext = createContext<UIContextType>({
@@ -31,6 +33,9 @@ const UIContext = createContext<UIContextType>({
     conversations: [],
     setConversations: () => {
     },
+    mode: "",
+    setMode: () => {
+    },
 });
 
 export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
@@ -39,6 +44,7 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) 
     const [hasGenerated, setHasGenerated] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [conversations, setConversations] = useState<string[]>([]);
+    const [mode, setMode] = useState<"none" | "login" | "register">("none");
 
     const requestTokenRef = useRef(0);
 
@@ -54,7 +60,9 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) 
             setIsLoggedIn,
             requestTokenRef,
             conversations,
-            setConversations
+            setConversations,
+            mode,
+            setMode,
         }}>
             {children}
         </UIContext.Provider>

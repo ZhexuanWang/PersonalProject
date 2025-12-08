@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Button } from "react-bootstrap";
-import { useUIContext } from "../UIContext/UIContext";
+import { useUIContext } from "../../contexts/UIContext/UIContext";
 
 const NewDialogButton: React.FC = () => {
 

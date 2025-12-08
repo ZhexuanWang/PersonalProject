@@ -1,4 +1,4 @@
-HTTP/1.1 409 Conflict
+HTTP/1.1 200 OK
 Content-Security-Policy: default-src 'self';connect-src 'self' http://localhost:5000;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
 Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Resource-Policy: same-origin
@@ -13,11 +13,12 @@ X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 0
 Vary: Origin
 Access-Control-Allow-Credentials: true
+Set-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOGRhYzM5Ny0wYjAzLTQ1ZDEtODRhZi00NjRiN2NjODQ0ZWMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUyMDg1MzYsImV4cCI6MTc2NTgxMzMzNn0.BjCAKv85G595LEsT83OCLlLDpu5-SoKWJhRnwAMb_SQ; Path=/auth/refresh; HttpOnly; SameSite=Lax
 Content-Type: application/json; charset=utf-8
-Content-Length: 36
-ETag: W/"24-5B56xuvmw3IrU+e3WAtyoxowjFk"
-Date: Mon, 08 Dec 2025 10:06:42 GMT
+Content-Length: 338
+ETag: W/"152-ZPr0YTiwtTCXWzKu7NlpeKcgzmg"
+Date: Mon, 08 Dec 2025 15:42:16 GMT
 Connection: keep-alive
 Keep-Alive: timeout=5
 
-{"error":"Email already registered"}
+{"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOGRhYzM5Ny0wYjAzLTQ1ZDEtODRhZi00NjRiN2NjODQ0ZWMiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUyMDg1MzYsImV4cCI6MTc2NTIwOTQzNn0.S1Fch2Y7GbDxAWJfwZ8KBDP5oBmU1tSBk04eWeKxmkc","user":{"id":"18dac397-0b03-45d1-84af-464b7cc844ec","email":"test@example.com","name":"Tester"}}

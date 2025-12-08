@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
-import {useUIContext} from "../UIContext/UIContext"
+import {useUIContext} from "../../contexts/UIContext/UIContext"
 
 interface GeneratedDialogProps {
     show: boolean;

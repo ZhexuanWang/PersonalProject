@@ -3,7 +3,7 @@ import {Form, Button, InputGroup} from "react-bootstrap";
 import * as React from "react";
 import "./InputArea.css";
 import GeneratedDialog from "../GeneratedDialog/GeneratedDialog.tsx";
-import {useUIContext} from "../UIContext/UIContext"
+import {useUIContext} from "../../contexts/UIContext/UIContext"
 
 const InputArea: React.FC = () => {
     const [prompt, setPrompt] = useState("");

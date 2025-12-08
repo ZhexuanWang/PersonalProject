@@ -1,43 +1,29 @@
-import React, {useState} from "react";
+import React from "react";
 import "./AuthButton.css"
-import {useUIContext} from "../UIContext/UIContext"
+import {useUIContext} from "../../contexts/UIContext/UIContext"
 import LogoutButton from "../LogoutButton/LogoutButton.tsx";
-import { useAuth } from "./../../hooks/useAuth";
 
 const AuthButton: React.FC = () => {
-    const {isLoggedIn, setIsLoggedIn} = useUIContext();
-    const { login, register } = useAuth();
+    const {isLoggedIn, setMode} = useUIContext();
 
-
-    async function handleLogin() {
-        try {
-            await login("test@example.com", "mypassword"); // call the hook function
-            alert("Logged in!");
-            setIsLoggedIn(true);
-        } catch (err) {
-            console.error(err);
-            alert("Login failed");
-        }
+    async function showPanelLogin() {
+        alert("Show login panel!");
+        setMode("login");
     }
 
-    async function handleRegister() {
-        try {
-            const user = await register("test@example.com", "mypassword");
-            alert(`Registered user: ${user.email}`);
-        } catch (err) {
-            console.error(err);
-            alert("Registration failed");
-        }
+    async function showPanelRegister() {
+        alert(`Show registration panel!`);
+        setMode("register");
     }
 
     return (
         <>
             {!isLoggedIn ? (
                 <>
-                    <button className="btn outline" onClick={handleRegister}>
+                    <button className="btn outline" onClick={showPanelRegister}>
                         Register
                     </button>
-                    <button className="btn" onClick={handleLogin}>
+                    <button className="btn" onClick={showPanelLogin}>
                         Log In
                     </button>
                 </>

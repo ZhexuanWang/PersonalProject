@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./Sidebar.css";
 import AuthButton from "../AuthButton/AuthButton.tsx";
-import {useUIContext} from "../UIContext/UIContext.tsx";
+import {useUIContext} from "../../contexts/UIContext/UIContext.tsx";
 
 export const SidebarButton: React.FC = () => {
     const {setShowSidebar} = useUIContext();

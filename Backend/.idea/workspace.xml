@@ -5,7 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="379d524d-72c4-4f06-a054-0deef26d4f39" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/api/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/api/api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Backend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/.idea/auth-backend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/src/auth.util.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/src/store.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/auth-backend/test/test-auth.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-backend/src/api/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/auth-backend/src/api/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,9 +50,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/PersonalProjects/PixelArtWebsite/Backend",
     "node.js.detected.package.eslint": "true",
@@ -46,6 +62,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.excludes",
     "ts.external.directory.path": "D:\\PersonalProjects\\PixelArtWebsite\\Backend\\auth-backend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -55,6 +75,7 @@
       <recent name="D:\PersonalProjects\PixelArtWebsite\Backend\auth-vercel" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\PersonalProjects\PixelArtWebsite\Backend\auth-backend\test" />
       <recent name="D:\PersonalProjects\PixelArtWebsite\Backend\auth-vercel\api" />
     </key>
   </component>
@@ -92,6 +113,13 @@
       <workItem from="1765019803948" duration="648000" />
       <workItem from="1765020474394" duration="5236000" />
       <workItem from="1765026370045" duration="122000" />
+      <workItem from="1765026512162" duration="390000" />
+      <workItem from="1765130950546" duration="52000" />
+      <workItem from="1765131010833" duration="15000" />
+      <workItem from="1765131100396" duration="55000" />
+      <workItem from="1765131167063" duration="10000" />
+      <workItem from="1765131270899" duration="868000" />
+      <workItem from="1765132164127" duration="7422000" />
     </task>
     <servers />
   </component>

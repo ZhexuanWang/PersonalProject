@@ -1,0 +1,24 @@
+HTTP/1.1 200 OK
+Content-Security-Policy: default-src 'self';connect-src 'self' http://localhost:5000;base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Origin-Agent-Cluster: ?1
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-DNS-Prefetch-Control: off
+X-Download-Options: noopen
+X-Frame-Options: SAMEORIGIN
+X-Permitted-Cross-Domain-Policies: none
+X-XSS-Protection: 0
+Vary: Origin
+Access-Control-Allow-Credentials: true
+Set-Cookie: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNTJjYjkzMy1iMDZiLTQ4MWYtYmQ5OS0yZThiNDg2YzQ1YjgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUxODg0MDIsImV4cCI6MTc2NTc5MzIwMn0.K9Wx4337ijpYbW7KIA9OJPCE-V_TZ47PV2l85AWl4EE; Path=/auth/refresh; HttpOnly; SameSite=Lax
+Content-Type: application/json; charset=utf-8
+Content-Length: 338
+ETag: W/"152-CCe3Sd6fPViDEjhfnGfz96N+0SU"
+Date: Mon, 08 Dec 2025 10:06:42 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNTJjYjkzMy1iMDZiLTQ4MWYtYmQ5OS0yZThiNDg2YzQ1YjgiLCJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjUxODg0MDIsImV4cCI6MTc2NTE4OTMwMn0.5-OaE-gPn-evU4Lz4hZj2gfij0V3-B7BrsXei_mrwfE","user":{"id":"b52cb933-b06b-481f-bd99-2e8b486c45b8","email":"test@example.com","name":"Tester"}}

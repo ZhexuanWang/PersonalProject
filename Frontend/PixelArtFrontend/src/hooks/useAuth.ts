@@ -71,31 +71,28 @@ export function useAuth() {
     }
 
     async function login(email: string, password: string) {
+        console.log("📤 Sending login request:", { email, password });
 
-        console.log("📤 Sending login request:", {email, password});
+        const res = await api.post("/auth/login", { email, password });
 
-        const res = await api.post("/auth/login", {email, password});
+        console.log("📥 Full login response data:", res.data);
+        console.log("📥 List of response fields:", Object.keys(res.data));
 
-        console.log("📥 Full login response data:", res.data); // 🔍 Key: Check the full response
-        console.log("📥 List of response fields:", Object.keys(res.data)); // Check all field names // 🔧 Key: Use the accessToken field
-        const {accessToken, user: userData} = res.data; // Destructure accessToken
+        // 🔧 关键修复：兼容两种字段名
+        const token = res.data.access_token || res.data.accessToken; // 先检查下划线，再检查驼峰
+        const userData = res.data.user; // 用户信息
 
-        const token = res.data.accessToken ||
-            res.data.accessToken ||
-            res.data.token ||
-            res.data.accessToken;
+        console.log("🔑 Extracted token:", token ? "✅ Present" : "❌ Absent");
 
-        console.log("🔑 Extracted token:", token ? "Present" : "Absent");
         if (!token) {
+            console.error("❌ 所有可用字段:", Object.keys(res.data));
             throw new Error(`Login failed: No token received. Backend returned: ${JSON.stringify(res.data)}`);
         }
-        if (!accessToken) {
-            console.error("Login response data (no accessToken):", res.data);
-            throw new Error("Login failed: No accessToken received");
-        }
 
-        setToken(accessToken); // 存储并设置请求头
-        setUser(userData);
+        console.log("✅ Token value (前20位):", token.substring(0, 20) + "...");
+
+        setToken(token); // 存储并设置请求头
+        setUser(userData || { email }); // 如果 user 字段不存在，使用邮箱
     }
 
     async function logout() {

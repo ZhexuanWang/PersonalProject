@@ -28,11 +28,36 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: ["http://localhost:3000", "http://localhost:5173", 'https://personal-project-frontend-*.vercel.app',
-        'https://personal-project-frontend.vercel.app'],
-    credentials: true
-}));
+
+//通配符 * 在 origin 数组中是无效的 - Vercel 预览域名需要用正则表达式
+// 缺少对 OPTIONS 请求的处理 - 预检请求需要特殊处理
+const corsOptions = {
+    origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {        // 允许的域名列表
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://personal-project-frontend.vercel.app'
+        ];
+
+        // 正则表达式匹配所有 Vercel 预览域名
+        const vercelRegex = /https:\/\/personal-project-frontend-.*\.vercel\.app/;
+
+        if (!origin || allowedOrigins.includes(origin) || vercelRegex.test(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
+
+// 特别处理 OPTIONS 请求（重要！）
+app.options(/.*/, cors(corsOptions));
+
 
 app.get("/", (_req: Request, res: Response) => {
     res.send("Auth backend is running 🚀");

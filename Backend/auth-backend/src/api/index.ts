@@ -16,19 +16,6 @@ if (!process.env.GOOGLE_CLIENT_ID) {
 }
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-app.use(
-    helmet({
-        contentSecurityPolicy: {
-            directives: {
-                defaultSrc: ["'self'"],
-                connectSrc: ["'self'", "http://localhost:5000"],
-            },
-        },
-    })
-);
-app.use(express.json());
-app.use(cookieParser());
-
 //通配符 * 在 origin 数组中是无效的 - Vercel 预览域名需要用正则表达式
 // 缺少对 OPTIONS 请求的处理 - 预检请求需要特殊处理
 const corsOptions = {
@@ -58,6 +45,18 @@ app.use(cors(corsOptions));
 // 特别处理 OPTIONS 请求（重要！）
 app.options(/.*/, cors(corsOptions));
 
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                connectSrc: ["'self'", "http://localhost:5000"],
+            },
+        },
+    })
+);
+app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (_req: Request, res: Response) => {
     res.send("Auth backend is running 🚀");

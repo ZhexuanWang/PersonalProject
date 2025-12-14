@@ -58,50 +58,22 @@ export function useAuth() {
 
     async function register(email: string, password: string) {
         try {
-            console.log("🚀 注册流程开始...");
-            console.log("📧 邮箱:", email);
+            console.log("📝 开始注册...");
 
-            const res = await api.post("/auth/register", {email, password});
+            // 1. 注册
+            const registerRes = await api.post("/auth/register", {email, password});
+            console.log("✅ 注册成功:", registerRes.data);
 
-            console.log("📊 注册响应状态:", res.status);
-            console.log("📦 响应数据:", res.data);
-            console.log("🔑 可用字段:", Object.keys(res.data));
+            // 2. 立即调用 login 函数登录
+            console.log("🔐 注册成功，自动登录...");
+            await login(email, password); // 🔥 关键：调用已有的 login 函数
 
-            // 详细检查 token 字段
-            console.log("🔍 Token 字段检查:");
-            console.log("  - access_token:", res.data.access_token);
-            console.log("  - accessToken:", res.data.accessToken);
-            console.log("  - token:", res.data.token);
-
-            // 提取 token
-            const token = res.data.access_token || res.data.accessToken || res.data.token;
-
-            if (token) {
-                console.log("✅ 找到 token，自动登录");
-                setToken(token);
-            } else {
-                console.log("ℹ️  注册成功，但未返回 token");
-                console.log("ℹ️  这可能是因为：1. 后端设计如此 2. 需要手动登录");
-            }
-
-            // 提取用户信息
-            const userData = res.data.user || {
-                id: res.data.id,
-                email: res.data.email || email
-            };
-
-            setUser(userData);
-
-            console.log("🎉 注册流程完成");
-            return res.data;
+            console.log("🎉 注册并登录成功");
+            return registerRes.data;
         } catch (error: any) {
-            // 特殊处理 409 Conflict（用户已存在）
             if (error.response?.status === 409) {
-                console.log("⚠️ 用户已存在，请直接登录");
-                throw new Error("该邮箱已被注册，请直接登录");
+                throw new Error("该邮箱已被注册");
             }
-
-            console.error("💥 注册错误:", error);
             throw error;
         }
     }

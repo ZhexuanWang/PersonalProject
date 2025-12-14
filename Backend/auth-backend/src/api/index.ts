@@ -205,7 +205,7 @@ app.post("/auth/logout", (_req: Request, res: Response) => {
 });
 
 // GET /me
-app.get("/me", (req: Request, res: Response) => {
+app.get("/me", requireAuth, (req: Request, res: Response) => {
     const {sub} = (req as any).user;
     const user = findUserById(sub);
     if (!user) return res.status(404).json({error: "User not found"});

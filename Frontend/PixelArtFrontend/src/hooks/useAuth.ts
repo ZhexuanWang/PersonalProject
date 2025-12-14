@@ -36,26 +36,6 @@ export function useAuth() {
         delete api.defaults.headers.common["Authorization"];
     };
 
-    useEffect(() => {
-        const token = getToken();
-        if (token) {
-            api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-            api.get("/me")
-                .then(res => setUser(res.data))
-                .catch((err) => {
-                    console.error("自动登录失败:", err);
-                    if (err.response?.status === 401) {
-                        removeToken();
-                    }
-                    setUser(null);
-                })
-                .finally(() => setLoading(false));
-        } else {
-            setLoading(false);
-        }
-    }, []);
-
     async function register(email: string, password: string) {
         try {
             console.log("📝 开始注册...");

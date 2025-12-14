@@ -94,7 +94,7 @@ export function useAuth() {
 
             console.log("🎉 注册流程完成");
             return res.data;
-        } catch (error) {
+        } catch (error: any) {
             // 特殊处理 409 Conflict（用户已存在）
             if (error.response?.status === 409) {
                 console.log("⚠️ 用户已存在，请直接登录");

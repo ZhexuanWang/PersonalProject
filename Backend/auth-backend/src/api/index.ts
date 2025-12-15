@@ -204,6 +204,27 @@ app.post("/auth/logout", (_req: Request, res: Response) => {
     res.json({ok: true});
 });
 
+// 🎯 实验：添加多个测试路由
+app.get("/test-me", (req: Request, res: Response) => {
+    console.log("✅ /test-me 被访问");
+    res.json({ message: "Test /me endpoint", timestamp: new Date() });
+});
+
+app.get("/me-test", (req: Request, res: Response) => {
+    console.log("✅ /me-test 被访问");
+    res.json({ message: "Alternative /me endpoint", timestamp: new Date() });
+});
+
+app.get("/debug-me", requireAuth, (req: Request, res: Response) => {
+    console.log("✅ /debug-me 被访问");
+    const user = (req as any).user;
+    res.json({
+        message: "Debug /me with auth",
+        user,
+        timestamp: new Date()
+    });
+});
+
 // GET /me
 app.get("/me", requireAuth, (req: Request, res: Response) => {
     const {sub} = (req as any).user;

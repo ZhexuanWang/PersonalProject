@@ -60,15 +60,23 @@ export function useAuth() {
         try {
             console.log("📝 开始注册...");
 
-            // 1. 注册
+            // 1. 只注册，不自动登录
             const registerRes = await api.post("/auth/register", {email, password});
             console.log("✅ 注册成功:", registerRes.data);
 
-            // 2. 立即调用 login 函数登录
-            console.log("🔐 注册成功，自动登录...");
-            await login(email, password); // 🔥 关键：调用已有的 login 函数
+            // 2. 直接使用注册返回的 token 和用户信息
+            const token = registerRes.data.access_token || registerRes.data.accessToken;
+            const userData = registerRes.data.user;
 
-            console.log("🎉 注册并登录成功");
+            if (token) {
+                console.log("🔑 使用注册返回的 token");
+                setToken(token);
+                setUser(userData || { email });
+                console.log("🎉 注册成功，用户已设置");
+            } else {
+                console.warn("⚠️ 注册响应中没有 token，需要用户手动登录");
+                // 可以返回需要登录的标记
+            }
             return registerRes.data;
         } catch (error: any) {
             if (error.response?.status === 409) {

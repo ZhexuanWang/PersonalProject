@@ -229,7 +229,7 @@ app.get("/debug-me", requireAuth, (req: Request, res: Response) => {
 app.get("/me", requireAuth, (req: Request, res: Response) => {
     const {sub} = (req as any).user;
     const user = findUserById(sub);
-    if (!user) return res.status(404).json({error: "User not found"});
+    //if (!user) return res.status(404).json({error: "User not found"});
     res.json({
         id: user!.id,
         email: user!.email,

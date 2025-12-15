@@ -88,6 +88,40 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
 }
 
+// 🎯 关键：手动路由处理器
+app.use((req: Request, res: Response, next: NextFunction) => {
+    console.log(`📨 ${req.method} ${req.path}`);
+
+    // 手动处理路由
+    if (req.method === 'GET' && req.path === '/') {
+        return res.json({ message: 'API is running', timestamp: new Date() });
+    }
+
+    if (req.method === 'GET' && req.path === '/health') {
+        return res.json({ status: 'healthy', service: 'auth-backend' });
+    }
+
+    if (req.method === 'GET' && req.path === '/test-me') {
+        return res.json({ test: 'GET is working', endpoint: '/test-me' });
+    }
+
+    if (req.method === 'GET' && req.path === '/me-test') {
+        return res.json({ test: 'GET is working', endpoint: '/me-test' });
+    }
+
+    if (req.method === 'GET' && req.path === '/me') {
+        // 这里先返回测试数据
+        return res.json({
+            user: 'test-user',
+            email: 'test@example.com',
+            message: 'GET /me is working'
+        });
+    }
+
+    // 继续到其他中间件或 404
+    next();
+});
+
 // POST /auth/register
 app.post("/auth/register", async (req: Request, res: Response) => {
     const {email, password, name} = req.body;
@@ -204,7 +238,7 @@ app.post("/auth/logout", (_req: Request, res: Response) => {
     res.json({ok: true});
 });
 
-// 🎯 实验：添加多个测试路由
+/*// 🎯 实验：添加多个测试路由
 app.get("/test-me", (req: Request, res: Response) => {
     console.log("✅ /test-me 被访问");
     res.json({ message: "Test /me endpoint", timestamp: new Date() });
@@ -223,9 +257,9 @@ app.get("/debug-me", requireAuth, (req: Request, res: Response) => {
         user,
         timestamp: new Date()
     });
-});
+});*/
 
-// GET /me
+/*// GET /me
 app.get("/me", requireAuth, (req: Request, res: Response) => {
     const {sub} = (req as any).user;
     const user = findUserById(sub);
@@ -237,7 +271,7 @@ app.get("/me", requireAuth, (req: Request, res: Response) => {
         googleLinked: user!.googleLinked,
         hasPassword: !!user!.passwordHash
     });
-});
+});*/
 
 const port = Number(process.env.PORT) || 5000;
 const host = '0.0.0.0'; // ✅ 关键修复

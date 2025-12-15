@@ -239,5 +239,11 @@ app.get("/me", requireAuth, (req: Request, res: Response) => {
     });
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Auth server running on port ${port}`));
+const port = Number(process.env.PORT) || 5000;
+const host = '0.0.0.0'; // ✅ 关键修复
+
+app.listen(port, host, () => {
+    console.log(`✅ Auth server running on http://${host}:${port}`);
+    console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔧 Render External URL: ${process.env.RENDER_EXTERNAL_URL || 'Not on Render'}`);
+});

@@ -36,7 +36,7 @@ export function useAuth() {
         delete api.defaults.headers.common["Authorization"];
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         const token = getToken();
         if (token) {
             api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -54,7 +54,7 @@ export function useAuth() {
         } else {
             setLoading(false);
         }
-    }, []);
+    }, []);*/
 
     async function register(email: string, password: string) {
         try {

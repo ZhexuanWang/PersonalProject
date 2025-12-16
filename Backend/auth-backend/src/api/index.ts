@@ -27,7 +27,7 @@ const corsOptions = {
         ];
 
         // 正则表达式匹配所有 Vercel 预览域名
-        const vercelRegex = /https:\/\/personal-project-frontend-.+-zhexuanwangs-projects\.vercel\.app/;
+        const vercelRegex = /^https:\/\/personal-project-frontend-[^.]+-zhexuanwangs-projects\.vercel\.app$/;
 
         if (!origin || allowedOrigins.includes(origin) || vercelRegex.test(origin)) {
             callback(null, true);

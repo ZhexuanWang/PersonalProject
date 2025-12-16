@@ -16,17 +16,15 @@ if (!process.env.GOOGLE_CLIENT_ID) {
 }
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-//通配符 * 在 origin 数组中是无效的 - Vercel 预览域名需要用正则表达式
-// 缺少对 OPTIONS 请求的处理 - 预检请求需要特殊处理
+// ✅ Fixed CORS with Vercel preview support
 const corsOptions = {
-    origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {        // 允许的域名列表
+    origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
         const allowedOrigins = [
             'http://localhost:3000',
             'http://localhost:5173',
             'https://personal-project-frontend.vercel.app'
         ];
 
-        // 正则表达式匹配所有 Vercel 预览域名
         const vercelRegex = /^https:\/\/personal-project-frontend-[^.]+-zhexuanwangs-projects\.vercel\.app$/;
 
         if (!origin || allowedOrigins.includes(origin) || vercelRegex.test(origin)) {
@@ -41,8 +39,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// 特别处理 OPTIONS 请求（重要！）
 app.options(/.*/, cors(corsOptions));
 
 app.use(
@@ -62,7 +58,7 @@ app.get("/", (_req: Request, res: Response) => {
     res.send("Auth backend is running 🚀");
 });
 
-// Helper: set refresh cookie
+// ✅ Helper: set refresh cookie
 function setRefreshCookie(res: Response, token: string) {
     res.cookie("refresh_token", token, {
         httpOnly: true,
@@ -72,7 +68,7 @@ function setRefreshCookie(res: Response, token: string) {
     });
 }
 
-// Middleware: require access token
+// ✅ Middleware: require access token
 function requireAuth(req: Request, res: Response, next: NextFunction) {
     const auth = req.headers.authorization;
     if (!auth || !auth.startsWith("Bearer ")) {
@@ -80,7 +76,6 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
     try {
         const token = auth.slice(7);
-        // contains sub + email
         (req as any).user = verifyAccessToken(token);
         next();
     } catch {
@@ -88,46 +83,25 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-// 🎯 关键：手动路由处理器
-app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log(`📨 ${req.method} ${req.path}`);
-
-    // 手动处理路由
-    if (req.method === 'GET' && req.path === '/') {
-        return res.json({ message: 'API is running', timestamp: new Date() });
-    }
-
-    if (req.method === 'GET' && req.path === '/health') {
-        return res.json({ status: 'healthy', service: 'auth-backend' });
-    }
-
-    if (req.method === 'GET' && req.path === '/test-me') {
-        return res.json({ test: 'GET is working', endpoint: '/test-me' });
-    }
-
-    if (req.method === 'GET' && req.path === '/me-test') {
-        return res.json({ test: 'GET is working', endpoint: '/me-test' });
-    }
-
-    if (req.method === 'GET' && req.path === '/me') {
-        // 这里先返回测试数据
-        return res.json({
-            user: 'test-user',
-            email: 'test@example.com',
-            message: 'GET /me is working'
-        });
-    }
-
-    // 继续到其他中间件或 404
-    next();
+// ✅ Health and test endpoints
+app.get('/health', (req: Request, res: Response) => {
+    res.json({ status: 'healthy', service: 'auth-backend' });
 });
 
-// POST /auth/register
+app.get('/test-me', (req: Request, res: Response) => {
+    res.json({ test: 'GET is working', endpoint: '/test-me' });
+});
+
+app.get('/me-test', (req: Request, res: Response) => {
+    res.json({ test: 'GET is working', endpoint: '/me-test' });
+});
+
+// ✅ POST /auth/register - FIXED with await
 app.post("/auth/register", async (req: Request, res: Response) => {
     const {email, password, name} = req.body;
     if (!email || !password) return res.status(400).json({error: "Email and password required"});
 
-    const existing = findUserByEmail(email);
+    const existing = await findUserByEmail(email);
     if (existing) return res.status(409).json({error: "Email already registered"});
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -140,10 +114,10 @@ app.post("/auth/register", async (req: Request, res: Response) => {
     res.json({accessToken: access, user: {id: user.id, email: user.email, name: user.name}});
 });
 
-// POST /auth/login
+// ✅ POST /auth/login - FIXED with await
 app.post("/auth/login", async (req: Request, res: Response) => {
     const {email, password} = req.body;
-    const user = findUserByEmail(email);
+    const user = await findUserByEmail(email);
     if (!user || !user.passwordHash) return res.status(401).json({error: "Invalid credentials"});
 
     const ok = await bcrypt.compare(password, user.passwordHash);
@@ -156,7 +130,7 @@ app.post("/auth/login", async (req: Request, res: Response) => {
     res.json({accessToken: access, user: {id: user.id, email: user.email, name: user.name}});
 });
 
-// POST /auth/google
+// ✅ POST /auth/google - FIXED with await
 app.post("/auth/google", async (req: Request, res: Response) => {
     const {idToken} = req.body;
     if (!idToken) return res.status(400).json({error: "idToken required"});
@@ -169,9 +143,8 @@ app.post("/auth/google", async (req: Request, res: Response) => {
         const payload = ticket.getPayload();
         if (!payload || !payload.email) return res.status(400).json({error: "Google email missing"});
 
-        let user = findUserByEmail(payload.email);
+        let user = await findUserByEmail(payload.email);
         if (!user) {
-            // ✅ only include name if defined
             user = createUser({
                 id: uuid(),
                 email: payload.email,
@@ -179,7 +152,7 @@ app.post("/auth/google", async (req: Request, res: Response) => {
                 ...(payload.name ? {name: payload.name} : {})
             });
         } else {
-            if (!user.googleLinked) user = updateUser(user.id, {googleLinked: true})!;
+            if (!user.googleLinked) user = await updateUser(user.id, {googleLinked: true})!;
         }
 
         const access = signAccessToken(user.id, user.email);
@@ -196,17 +169,17 @@ app.post("/auth/google", async (req: Request, res: Response) => {
     }
 });
 
-// POST /auth/set-password
+// ✅ POST /auth/set-password - FIXED with await
 app.post("/auth/set-password", requireAuth, async (req: Request, res: Response) => {
     const {password} = req.body;
     if (!password) return res.status(400).json({error: "Password required"});
 
     const {sub} = (req as any).user;
-    const user = findUserById(sub);
+    const user = await findUserById(sub);
     if (!user) return res.status(404).json({error: "User not found"});
 
     const hash = await bcrypt.hash(password, 10);
-    const updated = updateUser(user.id, {passwordHash: hash})!;
+    const updated = await updateUser(user.id, {passwordHash: hash})!;
     const accessToken = signAccessToken(updated.id, updated.email);
 
     res.json({
@@ -219,7 +192,22 @@ app.post("/auth/set-password", requireAuth, async (req: Request, res: Response) 
     });
 });
 
-// POST /auth/refresh
+// ✅ GET /me - PROPERLY IMPLEMENTED with auth and await
+app.get("/me", requireAuth, async (req: Request, res: Response) => {
+    const {sub} = (req as any).user;
+    const user = await findUserById(sub);
+    if (!user) return res.status(404).json({error: "User not found"});
+
+    res.json({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        googleLinked: user.googleLinked,
+        hasPassword: !!user.passwordHash
+    });
+});
+
+// ✅ POST /auth/refresh
 app.post("/auth/refresh", (req: Request, res: Response) => {
     const rt = req.cookies["refresh_token"];
     if (!rt) return res.status(401).json({error: "No refresh token"});
@@ -232,49 +220,19 @@ app.post("/auth/refresh", (req: Request, res: Response) => {
     }
 });
 
-// POST /auth/logout
+// ✅ POST /auth/logout
 app.post("/auth/logout", (_req: Request, res: Response) => {
     res.clearCookie("refresh_token", {path: "/auth/refresh"});
     res.json({ok: true});
 });
 
-/*// 🎯 实验：添加多个测试路由
-app.get("/test-me", (req: Request, res: Response) => {
-    console.log("✅ /test-me 被访问");
-    res.json({ message: "Test /me endpoint", timestamp: new Date() });
+// ✅ 404 handler - MUST BE LAST
+app.use((_req: Request, res: Response) => {
+    res.status(404).json({ error: 'Route not found' });
 });
-
-app.get("/me-test", (req: Request, res: Response) => {
-    console.log("✅ /me-test 被访问");
-    res.json({ message: "Alternative /me endpoint", timestamp: new Date() });
-});
-
-app.get("/debug-me", requireAuth, (req: Request, res: Response) => {
-    console.log("✅ /debug-me 被访问");
-    const user = (req as any).user;
-    res.json({
-        message: "Debug /me with auth",
-        user,
-        timestamp: new Date()
-    });
-});*/
-
-/*// GET /me
-app.get("/me", requireAuth, (req: Request, res: Response) => {
-    const {sub} = (req as any).user;
-    const user = findUserById(sub);
-    //if (!user) return res.status(404).json({error: "User not found"});
-    res.json({
-        id: user!.id,
-        email: user!.email,
-        name: user!.name,
-        googleLinked: user!.googleLinked,
-        hasPassword: !!user!.passwordHash
-    });
-});*/
 
 const port = Number(process.env.PORT) || 5000;
-const host = '0.0.0.0'; // ✅ 关键修复
+const host = '0.0.0.0';
 
 app.listen(port, host, () => {
     console.log(`✅ Auth server running on http://${host}:${port}`);

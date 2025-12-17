@@ -9,12 +9,12 @@ export default function AuthArea() {
     const [name, setName] = useState("");
     const {login, register} = useAuth();
     const {isLoggedIn, setIsLoggedIn, mode, setMode} = useUIContext();
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     async function handleLogin() {
         try {
             await login(email, password);
-            //navigate("/profile");
+            navigate("/profile");
             setIsLoggedIn(true);
         } catch (err) {
             console.error(err);
@@ -27,7 +27,7 @@ export default function AuthArea() {
             await register(email, password);
             await login(email, password); // immediately log in after register
             setIsLoggedIn(true);
-            //navigate("/profile"); // redirect
+            navigate("/profile"); // redirect
         } catch (err) {
             console.error(err);
             alert("Registration failed");

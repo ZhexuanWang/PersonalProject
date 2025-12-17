@@ -13,8 +13,8 @@ function App() {
         <>
             <Routes>
                 <Route path="/" element={<></>} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
-            {isLoggedIn&&<Profile />}
             <Ribbon/>
             <AuthArea/>
             <InputArea/>

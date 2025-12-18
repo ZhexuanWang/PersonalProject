@@ -1,17 +1,17 @@
 .ribbon {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1100;
-    display: flex;
+    position: relative; /* 相对定位 */
+    display: inline-flex; /* 改为行内flex，宽度自适应内容 */
     flex-direction: column;
     gap: 8px;
     padding: 10px;
-    background: rgba(20, 20, 20, 0);
-    border-radius: 0 8px 8px 0; /* rounded right edge */
-    backdrop-filter: blur(6px);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0);
+    /* 移除背景和阴影 */
+    background: transparent;
+    border-radius: 0;
+    backdrop-filter: none;
+    box-shadow: none;
+    border: none;
     transition: opacity 0.3s ease;
+    z-index: 1100;
 }
 
 .ribbon.faded {
@@ -24,11 +24,14 @@
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 13px;
-    color: transparent;
-    background: transparent;
+    color: white; /* 改为可见的颜色 */
+    background: rgba(255, 255, 255, 0.1); /* 按钮有背景但容器无背景 */
     border: none;
     transition: background 150ms ease;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+    width: auto; /* 自适应内容宽度 */
+    text-align: center;
+    min-width: 60px; /* 设置最小宽度 */
 }
 
 .ribbon-btn:hover {

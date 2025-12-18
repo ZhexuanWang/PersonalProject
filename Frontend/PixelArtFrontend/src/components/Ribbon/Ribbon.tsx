@@ -16,7 +16,6 @@ const Ribbon: React.FC = () => {
                 <NewDialogButton />
                 <SidebarButton />
             </div>
-            <Sidebar />
         </>
     );
 };

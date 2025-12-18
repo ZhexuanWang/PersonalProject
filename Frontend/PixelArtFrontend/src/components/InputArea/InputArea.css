@@ -5,7 +5,7 @@
     width: 100%;
     text-align: center;
     left: 50%;
-    position: absolute;
+    position: relative;
     transition: top 0.6s ease, transform 0.6s ease, width 0.6s ease;
 }
 

@@ -36,16 +36,6 @@ export default function AuthArea() {
 
     return (
         <>
-            {/* Top-left icon button */}
-            <button
-                className="open-panel-btn"
-                onClick={() => {
-                    setMode("register"); // default to register
-                }}
-            >
-                ☰ {/* replace with an icon */}
-            </button>
-
             <div>
 
 

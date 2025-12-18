@@ -9,7 +9,7 @@ export const SidebarButton: React.FC = () => {
     return (
         <>
             <button className="" onClick={() => setShowSidebar(true)}>
-                Open Sidebar
+                ⚙
             </button>
         </>
     );
@@ -30,11 +30,23 @@ const Sidebar: React.FC = () => {
             <div className={`sidebar ${showSidebar ? "open" : ""}`}>
                 <div className="sidebar-header">
                     <h2>Copilot‑Style Sidebar</h2>
-                    <button className="close-btn" onClick={() => setShowSidebar(false)}>
-                        ×
-                    </button>
                 </div>
                 <div className="sidebar-body">
+                    <button className="sidebar-arrow" onClick={() => setShowSidebar(false)}
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                right: "-20px", // makes it exceed the sidebar edge
+                                transform: "translateY(-50%)",
+                                background: "transparent", // no circle background
+                                border: "none",
+                                fontSize: "20px",
+                                cursor: "pointer",
+                                outline: "none",
+                                boxShadow: "none",
+                            }}>
+                        ◀
+                    </button>
                     {!isLoggedIn ? (
                         <>
                             <div>Login to save your dialogs.</div>
@@ -60,7 +72,7 @@ const Sidebar: React.FC = () => {
                 <AuthButton/>
             </div>
 
-            {showSidebar && <div className="overlay" onClick={() => setShowSidebar(false)}/>}
+            {showSidebar && <div className="" onClick={() => setShowSidebar(false)}/>}
         </>
     );
 };

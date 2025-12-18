@@ -25,7 +25,7 @@ const NewDialogButton: React.FC = () => {
 
     return (
         <Button variant="outline-primary" onClick={handleNewDialog}>
-            New Dialog
+            +
         </Button>
     );
 };

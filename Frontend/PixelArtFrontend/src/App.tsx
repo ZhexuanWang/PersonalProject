@@ -1,23 +1,20 @@
 import React from 'react'
 import './App.css'
-import InputArea from "./components/InputArea/InputArea.tsx";
-import Ribbon from "./components/Ribbon/Ribbon.tsx";
-import AuthArea from "./components/AuthArea/AuthArea.tsx";
 import {Route, Routes} from "react-router-dom";
-import Profile from "./components/Profile/Profile.tsx";
 import {useUIContext} from "./contexts/UIContext/UIContext.tsx";
+import ProfilePage from "./pages/ProfilePage/ProfilePage.tsx";
+import ChatPage from "./pages/ChatPage/ChatPage.tsx";
+import AuthPage from "./pages/AuthPage/AuthPage.tsx";
 
 function App() {
     const {isLoggedIn} = useUIContext();
     return (
         <>
             <Routes>
-                <Route path="/" element={<></>} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/" element={<ChatPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/auth" element={<AuthPage />}></Route>
             </Routes>
-            <Ribbon/>
-            <AuthArea/>
-            <InputArea/>
         </>
     )
 }

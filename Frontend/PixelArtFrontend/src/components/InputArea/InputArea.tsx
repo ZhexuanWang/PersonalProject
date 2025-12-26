@@ -2,12 +2,13 @@ import {useState} from "react";
 import {Form, Button, InputGroup} from "react-bootstrap";
 import * as React from "react";
 import "./InputArea.css";
-import GeneratedDialog from "../GeneratedDialog/GeneratedDialog.tsx";
 import {useUIContext} from "../../contexts/UIContext/UIContext"
+import Artbook from "../GeneratedDialog/Artbook.tsx";
+import ReactDOM from 'react-dom';
 
 const InputArea: React.FC = () => {
     const [prompt, setPrompt] = useState("");
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [images, setImages] = useState<string[]>([]); // 改为数组存储多个图片
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef} = useUIContext();
@@ -19,7 +20,7 @@ const InputArea: React.FC = () => {
         setHasGenerated(true);
         setLoading(true);
         setError(null);
-        setImageUrl(null);
+        // 不再清空 images 数组，保留历史记录
 
         try {
             const response = await fetch("/api/generate", {
@@ -33,7 +34,8 @@ const InputArea: React.FC = () => {
             const data = await response.json();
 
             if (token === requestTokenRef.current) {
-                setImageUrl(data.imageUrl);
+                // 将新图片添加到数组中，而不是替换
+                setImages(prev => [...prev, data.imageUrl]);
                 setShowDialog(true);
             }
         } catch (err: any) {
@@ -47,17 +49,34 @@ const InputArea: React.FC = () => {
     };
 
 
-    const handleDownload = () => {
-        if (imageUrl) {
-            const link = document.createElement("a");
-            link.href = imageUrl;
-            link.download = "generated.png";
-            link.click();
+    const handleDownload = (url: string) => {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `generated-${Date.now()}.png`;
+        link.click();
+    };
+
+    const handleDelete = (index: number) => {
+        setImages(prev => prev.filter((_, i) => i !== index));
+        // 如果删除了最后一张图片，可以决定是否关闭对话框
+        if (images.length <= 1) {
+            // setShowDialog(false); // 可选：当没有图片时关闭对话框
         }
     };
 
     return (
         <div className={`input-wrapper ${hasGenerated ? "bottom" : "center"}`}>
+            {showDialog && ReactDOM.createPortal(
+                <div className="artbook-modal-overlay">
+                    <Artbook
+                        images={images}
+                        error={error}
+                        onDownload={handleDownload}
+                        onDelete={handleDelete}
+                    />
+                </div>,
+                document.body
+            )}
             <div className={`guiding-text  ${hasGenerated ? "bottom" : "center"}`}>
                 What can I help you today?
             </div>
@@ -75,15 +94,6 @@ const InputArea: React.FC = () => {
                 </InputGroup>
 
                 {error && <div className="text-danger mt-2">{error}</div>}
-
-                <GeneratedDialog
-                    show={showDialog}
-                    imageUrl={imageUrl}
-                    error={error}
-                    onClose={() => setShowDialog(false)}
-                    onDownload={handleDownload}
-                    onClear={() => setImageUrl(null)}
-                />
             </div>
         </div>
     );

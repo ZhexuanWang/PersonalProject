@@ -1,0 +1,604 @@
+/* Artbook 对话框容器样式 */
+.artbook-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px; /* 与输入框保持一致 */
+    height: 78vh;
+    max-height: 800px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    position: relative;
+    overflow: visible;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-top: -50px;
+}
+
+/* 功能区预留区域 */
+.artbook-header {
+    width: 100%;
+    height: 80px; /* 预留空间给未来功能 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+}
+
+.header-left {
+    display: flex;
+    gap: 15px;
+}
+
+.header-button {
+    background: rgba(0, 123, 255, 0.1);
+    border: 1px solid rgba(0, 123, 255, 0.2);
+    color: #007bff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-button:hover {
+    background: rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* 图片容器 - 与输入框同宽 */
+.image-section {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0 10px;
+}
+
+.image-wrapper {
+    width: 100%;
+    max-width: 560px; /* 与输入框宽度匹配 */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+/* 图片显示区域 */
+.image-display {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(248, 249, 250, 0.8);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.artbook-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* 功能区 - 图片上方 */
+.image-top-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.image-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.image-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.image-meta {
+    font-size: 12px;
+    color: #666;
+}
+
+.image-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-button {
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+/* 按钮区域 - 重新设计 */
+.button-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.primary-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.primary-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.2);
+}
+
+.secondary-button {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.secondary-button:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* 箭头按钮 - 白色轮廓设计 */
+.arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 2px solid white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 24px;
+    color: #333;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    outline: 2px solid white; /* 白色轮廓 */
+    outline-offset: 2px;
+}
+
+.arrow-button:hover {
+    background: #f8f9fa;
+    border-color: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    outline: 2px solid white; /* 悬停时保持白色轮廓 */
+    outline-offset: 3px;
+}
+
+.left-arrow {
+    left: -25px; /* 移到容器外 */
+}
+
+.right-arrow {
+    right: -25px; /* 移到容器外 */
+}
+
+/* 关闭按钮 */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+    transition: all 0.2s ease;
+    z-index: 20;
+}
+
+.close-button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: rotate(90deg);
+    color: #333;
+}
+
+/* 底部信息栏 */
+.artbook-footer {
+    width: 100%;
+    padding: 15px 0 0;
+    text-align: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    color: #666;
+    font-size: 13px;
+}
+
+/* 页码指示器 */
+.page-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.page-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.page-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.page-dot.active {
+    background: #007bff;
+    width: 20px;
+    border-radius: 4px;
+}
+
+/* 错误状态 */
+.error-text {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    color: #d32f2f;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 500;
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .artbook-container {
+        width: 95%;
+        height: 85vh;
+        padding: 20px;
+    }
+
+    .arrow-button {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .left-arrow {
+        left: -20px;
+    }
+
+    .right-arrow {
+        right: -20px;
+    }
+
+    .button-row {
+        flex-wrap: wrap;
+    }
+
+    .primary-button, .secondary-button {
+        min-width: 100px;
+        padding: 10px 20px;
+    }
+}
+
+/* 加载状态 */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    z-index: 5;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.artbook-container {
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 画廊区域样式 */
+.gallery-section {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 10px 0;
+    background: rgba(248, 249, 250, 0.8);
+    border-radius: 12px;
+    position: relative;
+}
+
+/* 缩略图画廊容器 */
+.thumbnail-gallery {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    padding: 5px 15px;
+    flex: 1;
+    height: 100%;
+    align-items: center;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 123, 255, 0.3) transparent;
+}
+
+/* 隐藏滚动条但仍可滚动 */
+.thumbnail-gallery::-webkit-scrollbar {
+    height: 4px;
+}
+
+.thumbnail-gallery::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 2px;
+}
+
+.thumbnail-gallery::-webkit-scrollbar-thumb {
+    background: rgba(0, 123, 255, 0.3);
+    border-radius: 2px;
+}
+
+.thumbnail-gallery::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 123, 255, 0.5);
+}
+
+/* 缩略图容器 */
+.thumbnail-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 123, 255, 0.3);
+}
+
+.thumbnail-container.active {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 123, 255, 0.25);
+}
+
+/* 缩略图图片 */
+.thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail-container:hover .thumbnail-image {
+    transform: scale(1.05);
+}
+
+/* 缩略图覆盖层 */
+.thumbnail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 5px;
+    pointer-events: none;
+}
+
+.thumbnail-number {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 12px;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 当前选中指示器 */
+.current-indicator {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #007bff;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 画廊滚动按钮 */
+.gallery-scroll-btn {
+    background: white;
+    border: 2px solid rgba(0, 123, 255, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-scroll-btn:hover:not(:disabled) {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.gallery-scroll-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* 空画廊状态 */
+.empty-gallery {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.empty-placeholder {
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .gallery-section {
+        height: 85px;
+        padding: 8px;
+    }
+
+    .thumbnail-container {
+        width: 70px;
+        height: 70px;
+    }
+
+    .thumbnail-gallery {
+        gap: 12px;
+        padding: 5px 10px;
+    }
+
+    .gallery-scroll-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* 画廊区域动画 */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gallery-section {
+    animation: slideIn 0.4s ease-out;
+}

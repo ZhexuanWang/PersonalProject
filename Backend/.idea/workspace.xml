@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="379d524d-72c4-4f06-a054-0deef26d4f39" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/Artbook.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/Artbook.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/api/generate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/api/generate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/GeneratedDialog.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Ribbon/Ribbon.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Ribbon/Ribbon.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Ribbon/Ribbon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Ribbon/Ribbon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/pages/ChatPage/ChatPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/pages/ChatPage/ChatPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +100,7 @@
       <workItem from="1765132164127" duration="21324000" />
       <workItem from="1765781770253" duration="19298000" />
       <workItem from="1765997015070" duration="3672000" />
+      <workItem from="1766660819009" duration="1337000" />
     </task>
     <servers />
   </component>

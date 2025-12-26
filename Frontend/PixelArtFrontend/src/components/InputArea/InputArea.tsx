@@ -11,7 +11,7 @@ const InputArea: React.FC = () => {
     const [images, setImages] = useState<string[]>([]); // 改为数组存储多个图片
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const {showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef} = useUIContext();
+    const {showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef, showSidebar} = useUIContext();
 
     const handleGenerate = async () => {
         if (!prompt.trim()) return;
@@ -60,14 +60,16 @@ const InputArea: React.FC = () => {
         setImages(prev => prev.filter((_, i) => i !== index));
         // 如果删除了最后一张图片，可以决定是否关闭对话框
         if (images.length <= 1) {
-            // setShowDialog(false); // 可选：当没有图片时关闭对话框
+            // 可选：当没有图片时关闭对话框并让输入框居中
+            setHasGenerated(false);
+            setShowDialog(false);
         }
     };
 
     return (
         <div className={`input-wrapper ${hasGenerated ? "bottom" : "center"}`}>
             {showDialog && ReactDOM.createPortal(
-                <div className="artbook-modal-overlay">
+                <div className={`artbook-modal-overlay  ${showSidebar?"sidebar-open":"sidebar-close"}`}>
                     <Artbook
                         images={images}
                         error={error}

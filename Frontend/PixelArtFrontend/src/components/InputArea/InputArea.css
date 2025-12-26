@@ -65,10 +65,21 @@
     padding-top: 10vh; /* 上移一些 */
     z-index: 999; /* 确保低于输入框的 z-index */
     pointer-events: none; /* 关键：不阻挡任何点击 */
+    transform: translateX(125px);
 }
 
 /* Artbook 容器内部可以响应点击 */
 .artbook-container {
     pointer-events: auto; /* 容器内可点击 */
     /* 其他样式保持不变 */
+}
+
+.sidebar-open{
+    transform: translateX(125px); /* 根据侧边栏宽度调整 */
+    transition: transform 0.3s ease;
+}
+
+.sidebar-close{
+    transform: translateX(0px); /* 根据侧边栏宽度调整 */
+    transition: transform 0.3s ease;
 }

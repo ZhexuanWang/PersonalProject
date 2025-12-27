@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./Artbook.css";
 
 interface ArtbookProps {
@@ -6,11 +6,61 @@ interface ArtbookProps {
     error?: string | null;
     onDownload: (url: string) => void;
     onDelete: (index: number) => void;
+    currentPrompt?: string; // 添加当前提示词
+    onSaveGallery?: (images: string[], prompt?: string) => void; // 添加保存回调
 }
 
-const Artbook: React.FC<ArtbookProps> = ({ images, error, onDownload, onDelete }) => {
+const Artbook: React.FC<ArtbookProps> = ({    images,
+                                             error,
+                                             onDownload,
+                                             onDelete,
+                                             currentPrompt,
+                                             onSaveGallery }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loadedImages, setLoadedImages] = useState<string[]>(images);
     const galleryRef = useRef<HTMLDivElement | null>(null);
+
+    // 监听对话加载事件
+    useEffect(() => {
+        const handleLoadConversation = (event: CustomEvent) => {
+            const conversation = event.detail;
+            setLoadedImages([...conversation.images]);
+            setCurrentIndex(0);
+        };
+
+        window.addEventListener('loadConversation', handleLoadConversation as EventListener);
+
+        return () => {
+            window.removeEventListener('loadConversation', handleLoadConversation as EventListener);
+        };
+    }, []);
+
+    // 从 localStorage 加载对话
+    useEffect(() => {
+        const savedConversation = localStorage.getItem('loadedConversation');
+        if (savedConversation) {
+            try {
+                const conversation = JSON.parse(savedConversation);
+                setLoadedImages([...conversation.images]);
+                setCurrentIndex(0);
+                localStorage.removeItem('loadedConversation');
+            } catch (e) {
+                console.error('Failed to load conversation:', e);
+            }
+        }
+    }, []);
+
+    // 同步外部 images 到内部状态
+    useEffect(() => {
+        setLoadedImages(images);
+    }, [images]);
+
+    // 保存当前画廊的函数
+    const handleSaveGallery = () => {
+        if (onSaveGallery && loadedImages.length > 0) {
+            onSaveGallery(loadedImages, currentPrompt);
+        }
+    };
 
     // 点击缩略图切换主图片
     const handleThumbnailClick = (index: number) => {
@@ -49,6 +99,22 @@ const Artbook: React.FC<ArtbookProps> = ({ images, error, onDownload, onDelete }
 
     return (
         <div className="artbook-container">
+            {/* 在顶部添加保存按钮 */}
+            <div className="artbook-header">
+                <div className="header-left">
+                    <button
+                        className="header-button save-gallery-btn"
+                        onClick={handleSaveGallery}
+                        disabled={loadedImages.length === 0}
+                    >
+                        💾 Save Gallery
+                    </button>
+                </div>
+                <div className="page-indicator">
+                    <span>Gallery: {loadedImages.length} images</span>
+                </div>
+            </div>
+
             {/* 移除原来的头部，替换为画廊区域 */}
             <div className="gallery-section">
                 {/* 左滚动按钮 */}
@@ -107,17 +173,17 @@ const Artbook: React.FC<ArtbookProps> = ({ images, error, onDownload, onDelete }
 
                 <div className="image-wrapper">
                     {/* 图片上方功能区 */}
-                    <div className="image-top-actions">
-                        <div className="image-info">
-                            <div className="image-title">Generated Image</div>
-                            <div className="image-meta">1024×1024 • Just now</div>
-                        </div>
-                        <div className="image-actions">
-                            <button className="action-button" title="Share">↗</button>
-                            <button className="action-button" title="Favorite">♥</button>
-                            <button className="action-button" title="Info">ⓘ</button>
-                        </div>
-                    </div>
+                    {/*<div className="image-top-actions">*/}
+                    {/*    <div className="image-info">*/}
+                    {/*        <div className="image-title">Generated Image</div>*/}
+                    {/*        <div className="image-meta">1024×1024 • Just now</div>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="image-actions">*/}
+                    {/*        <button className="action-button" title="Share">↗</button>*/}
+                    {/*        <button className="action-button" title="Favorite">♥</button>*/}
+                    {/*        <button className="action-button" title="Info">ⓘ</button>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
 
                     {/* 图片显示 */}
                     <div className="image-display">

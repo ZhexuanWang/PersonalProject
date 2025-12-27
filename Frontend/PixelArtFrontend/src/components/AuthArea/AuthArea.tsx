@@ -14,8 +14,8 @@ export default function AuthArea() {
     async function handleLogin() {
         try {
             await login(email, password);
-            navigate("/profile");
             setIsLoggedIn(true);
+            navigate("/profile");
         } catch (err) {
             console.error(err);
             alert("Login failed");

@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="379d524d-72c4-4f06-a054-0deef26d4f39" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.css" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/AuthArea/AuthArea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/AuthArea/AuthArea.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/Artbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/Artbook.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/contexts/UIContext/UIContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/contexts/UIContext/UIContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/pages/ProfilePage/ProfilePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/pages/ProfilePage/ProfilePage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

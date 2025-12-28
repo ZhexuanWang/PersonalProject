@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Form, Button, InputGroup} from "react-bootstrap";
 import * as React from "react";
 import "./InputArea.css";
@@ -12,6 +12,10 @@ const InputArea: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const {showDialog, setShowDialog, hasGenerated, setHasGenerated, requestTokenRef, showSidebar} = useUIContext();
+    const [currentConversationId, setCurrentConversationId] = useState<string | undefined>(() => {
+        // 从 localStorage 恢复上次的对话ID
+        return localStorage.getItem('currentGalleryId') || undefined;
+    });
 
     const handleGenerate = async () => {
         if (!prompt.trim()) return;
@@ -66,6 +70,78 @@ const InputArea: React.FC = () => {
         }
     };
 
+    // InputArea.tsx - 更新 handleLoadGallery 函数
+    useEffect(() => {
+        const handleLoadGallery = (event: CustomEvent) => {
+            console.log("InputArea: 收到 loadGallery 事件", event.detail);
+
+            // 解构新格式的数据
+            const { images, title, prompt, id } = event.detail;
+
+            console.log("加载的画廊 ID:", id);
+            console.log("标题:", title);
+            console.log("提示词:", prompt);
+            console.log("图片数量:", images?.length);
+            console.log("图片内容:", images);
+
+            // 验证数据
+            if (!images || !Array.isArray(images)) {
+                console.error("无效的图片数据:", images);
+                alert("Invalid gallery data!");
+                return;
+            }
+
+            // if (images.length === 0) {
+            //     console.warn("图片数组为空");
+            //     alert("This gallery has no images!");
+            //     return;
+            // }
+
+            // 设置图片状态
+            setImages(images);
+            setCurrentConversationId(id); // 设置对话ID
+            localStorage.setItem('currentGalleryId', id); // 保存到 localStorage
+
+            // 可选：设置 prompt
+            if (prompt) {
+                setPrompt(prompt);
+            }
+
+            // 打开对话框
+            setShowDialog(true);
+            setHasGenerated(true);
+
+            console.log("✅ 画廊加载完成，已设置", images.length, "张图片");
+        };
+
+        window.addEventListener('loadGallery', handleLoadGallery as EventListener);
+
+        return () => {
+            window.removeEventListener('loadGallery', handleLoadGallery as EventListener);
+        };
+    }, [setShowDialog, setHasGenerated, setPrompt]);
+
+    // InputArea.tsx 中添加清理监听
+    useEffect(() => {
+        const handleClearCurrentGallery = () => {
+            console.log("InputArea: 收到清理当前画廊事件");
+            setCurrentConversationId(undefined);
+            setImages([]);
+            setPrompt("");
+            setShowDialog(false);
+            setHasGenerated(false);
+
+            // 清理 localStorage
+            localStorage.removeItem('currentGalleryId');
+        };
+
+        window.addEventListener('clearCurrentGallery', handleClearCurrentGallery);
+
+        return () => {
+            window.removeEventListener('clearCurrentGallery', handleClearCurrentGallery);
+        };
+    }, [setShowDialog, setHasGenerated]);
+
     return (
         <div className={`input-wrapper ${hasGenerated ? "bottom" : "center"}`}>
             {showDialog && ReactDOM.createPortal(
@@ -75,6 +151,8 @@ const InputArea: React.FC = () => {
                         error={error}
                         onDownload={handleDownload}
                         onDelete={handleDelete}
+                        currentPrompt={prompt}
+                        currentConversationId={currentConversationId}
                     />
                 </div>,
                 document.body

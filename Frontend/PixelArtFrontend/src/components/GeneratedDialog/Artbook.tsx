@@ -7,7 +7,7 @@ interface ArtbookProps {
     onDownload: (url: string) => void;
     onDelete: (index: number) => void;
     currentPrompt?: string; // 添加当前提示词
-    onSaveGallery?: (images: string[], prompt?: string) => void; // 添加保存回调
+    currentConversationId?: string; // 这个从 InputArea 传递过来
 }
 
 const Artbook: React.FC<ArtbookProps> = ({    images,
@@ -15,52 +15,155 @@ const Artbook: React.FC<ArtbookProps> = ({    images,
                                              onDownload,
                                              onDelete,
                                              currentPrompt,
-                                             onSaveGallery }) => {
+                                             currentConversationId // 这个从 InputArea 传递过来
+                                         }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loadedImages, setLoadedImages] = useState<string[]>(images);
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
-    // 监听对话加载事件
+    const [conversationId, setConversationId] = useState<string | undefined>(currentConversationId);
+    const [isExistingConversation, setIsExistingConversation] = useState(false);
+
+    // 检查对话是否存在
     useEffect(() => {
-        const handleLoadConversation = (event: CustomEvent) => {
-            const conversation = event.detail;
-            setLoadedImages([...conversation.images]);
-            setCurrentIndex(0);
+        const checkConversationExists = () => {
+            if (!conversationId) {
+                setIsExistingConversation(false);
+                return;
+            }
+
+            const saved = localStorage.getItem('galleryConversations');
+            if (saved) {
+                try {
+                    const conversations = JSON.parse(saved);
+                    const exists = conversations.some((conv: any) => conv.id === conversationId);
+                    console.log("对话存在检查:", exists ? "已存在" : "不存在");
+                    setIsExistingConversation(exists);
+                } catch (error) {
+                    console.error("检查对话失败:", error);
+                }
+            }
         };
 
-        window.addEventListener('loadConversation', handleLoadConversation as EventListener);
+        checkConversationExists();
+    }, [conversationId]);
+
+    // 保存当前画廊的函数
+    const handleSaveGallery = () => {
+        console.log("=== Artbook 保存按钮点击 ===");
+        console.log("当前 images 状态:", {
+            长度: images.length,
+            内容: images,
+            类型: typeof images,
+            是数组: Array.isArray(images)
+        });
+
+        // 检查每个图片 URL
+        images.forEach((img, index) => {
+            console.log(`图片 ${index}:`, {
+                url: img,
+                类型: typeof img,
+                长度: img?.length,
+                有效: img.length > 0
+            });
+        });
+        if (images.length === 0) {
+            alert("No images to save!");
+            return;
+        }
+
+        // 调用全局的保存函数（来自 Sidebar）
+        if (typeof (window as any).saveCurrentGallery === 'function') {
+            const saved = (window as any).saveCurrentGallery(images, currentPrompt,conversationId);
+            if (saved) {
+                alert("✅ Gallery saved successfully!");
+            } else {
+                alert("❌ Failed to save gallery. Please make sure you're logged in.");
+            }
+        } else {
+            alert("Save function not available. Please open the sidebar first to initialize.");
+        }
+    };
+
+    // ========== 修改1：更新事件监听器使用新格式 ==========
+    useEffect(() => {
+        const handleLoadGallery = (event: CustomEvent) => {
+            console.log("Artbook: 收到 loadGallery 事件", event.detail);
+
+            // 解构新格式的数据
+            const { images: loadedImages, title, prompt, id } = event.detail;
+
+            console.log("加载的画廊信息:", {
+                id,
+                title,
+                prompt,
+                图片数量: loadedImages?.length
+            });
+
+            if (loadedImages && Array.isArray(loadedImages) && loadedImages.length > 0) {
+                setLoadedImages([...loadedImages]);
+                setCurrentIndex(0);
+                console.log("✅ Artbook 已更新图片，数量:", loadedImages.length);
+            } else {
+                console.error("无效的图片数据:", loadedImages);
+            }
+        };
+
+        window.addEventListener('loadGallery', handleLoadGallery as EventListener);
 
         return () => {
-            window.removeEventListener('loadConversation', handleLoadConversation as EventListener);
+            window.removeEventListener('loadGallery', handleLoadGallery as EventListener);
         };
     }, []);
 
-    // 从 localStorage 加载对话
+    // ========== 修改2：从 localStorage 加载对话，使用新格式 ==========
     useEffect(() => {
-        const savedConversation = localStorage.getItem('loadedConversation');
-        if (savedConversation) {
+        const savedGallery = localStorage.getItem('loadedGallery');
+        if (savedGallery) {
             try {
-                const conversation = JSON.parse(savedConversation);
-                setLoadedImages([...conversation.images]);
+                const gallery = JSON.parse(savedGallery);
+                console.log("从 localStorage 恢复画廊:", gallery);
+
+                // 检查是新格式还是旧格式
+                if (gallery.images) {
+                    // 新格式：直接使用 images
+                    setLoadedImages([...gallery.images]);
+                } else if (gallery.detail && gallery.detail.images) {
+                    // 可能是事件格式
+                    setLoadedImages([...gallery.detail.images]);
+                }
+
                 setCurrentIndex(0);
-                localStorage.removeItem('loadedConversation');
+                localStorage.removeItem('loadedGallery');
+                console.log("✅ 画廊恢复完成");
             } catch (e) {
-                console.error('Failed to load conversation:', e);
+                console.error('Failed to load gallery:', e);
             }
         }
     }, []);
 
     // 同步外部 images 到内部状态
     useEffect(() => {
+        console.log("Artbook: 同步外部 images，数量:", images.length);
         setLoadedImages(images);
     }, [images]);
 
-    // 保存当前画廊的函数
-    const handleSaveGallery = () => {
-        if (onSaveGallery && loadedImages.length > 0) {
-            onSaveGallery(loadedImages, currentPrompt);
-        }
-    };
+    // ========== 修改3：监听 updateGalleryImages 事件（如果 InputArea 发送） ==========
+    useEffect(() => {
+        const handleUpdateImages = (event: CustomEvent) => {
+            console.log("Artbook: 收到 updateGalleryImages 事件", event.detail);
+            if (event.detail && Array.isArray(event.detail)) {
+                setLoadedImages([...event.detail]);
+                setCurrentIndex(0);
+            }
+        };
+
+        window.addEventListener('updateGalleryImages', handleUpdateImages as EventListener);
+
+        return () => {
+            window.removeEventListener('updateGalleryImages', handleUpdateImages as EventListener);
+        };
+    }, []);
 
     // 点击缩略图切换主图片
     const handleThumbnailClick = (index: number) => {

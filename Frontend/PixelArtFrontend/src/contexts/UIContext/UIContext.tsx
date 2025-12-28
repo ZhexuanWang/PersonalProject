@@ -3,9 +3,12 @@ import React, {createContext, useContext, useEffect, useRef, useState} from "rea
 export interface Conversation {
     id: string;
     title: string;
-    images: string[]; // 画廊图片数组
+    images: string[];
     createdAt: Date;
-    prompt?: string; // 可选的提示词
+    updatedAt: Date; // 添加更新时间
+    prompt?: string;
+    isNew?: boolean; // 标记是否是新对话
+    source?: 'current' | 'history'; // 标记来源
 }
 
 interface UIContextType {
@@ -60,28 +63,49 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) 
         return saved === 'true'; // 严格比较
     });
 
-    // 从 localStorage 恢复对话
+    // 生成唯一ID的函数
+    const generateUniqueId = (): string => {
+        return `gallery_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    };
+    // 从 localStorage 恢复对话 - 确保包含所有字段
     const [conversations, setConversations] = useState<Conversation[]>(() => {
-        const saved = localStorage.getItem('conversations');
-        if (saved) {
-            try {
+        try {
+            const saved = localStorage.getItem('galleryConversations');
+            console.log("=== UIProvider 初始化对话 ===");
+            console.log("从 localStorage 获取:", saved);
+
+            if (saved) {
                 const parsed = JSON.parse(saved);
-                // 转换日期字符串回 Date 对象
-                return parsed.map((conv: any) => ({
-                    ...conv,
-                    createdAt: new Date(conv.createdAt)
-                }));
-            } catch (e) {
-                console.error("恢复对话失败:", e);
-                return [];
+                console.log("解析后的数据:", parsed);
+                console.log("数组长度:", parsed.length);
+
+                // 转换日期
+                const restored = parsed.map((conv: any): Conversation => {
+                    console.log("转换对话:", conv.id, conv.title);
+                    return {
+                        id: conv.id || generateUniqueId(),
+                        title: conv.title || `Gallery ${Date.now()}`,
+                        images: conv.images || [],
+                        createdAt: new Date(conv.createdAt || Date.now()),
+                        updatedAt: new Date(conv.updatedAt || conv.createdAt || Date.now()),
+                        prompt: conv.prompt,
+                        isNew: conv.isNew !== undefined ? conv.isNew : false
+                    };
+                });
+
+                console.log("恢复后的对话:", restored);
+                return restored;
             }
+        } catch (error) {
+            console.error("恢复对话失败:", error);
         }
+        console.log("返回空数组");
         return [];
     });
 
     // 监听 conversations 变化并保存
     useEffect(() => {
-        localStorage.setItem('conversations', JSON.stringify(conversations));
+        localStorage.setItem('galleryConversations', JSON.stringify(conversations));
         console.log("保存对话到 localStorage:", conversations.length);
     }, [conversations]);
 
@@ -95,6 +119,35 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({children}) 
             console.log("清除登录状态");
         }
     }, [isLoggedIn]);
+
+    useEffect(() => {
+        // 页面加载时清理无效的对话ID
+        const cleanupInvalidGalleryIds = () => {
+            console.log("页面加载：清理无效的对话ID");
+
+            const currentId = localStorage.getItem('currentGalleryId');
+            if (!currentId) return;
+
+            const savedConversations = localStorage.getItem('galleryConversations');
+            if (savedConversations) {
+                try {
+                    const conversations = JSON.parse(savedConversations);
+                    const conversationExists = conversations.some((conv: any) => conv.id === currentId);
+
+                    if (!conversationExists) {
+                        console.warn("清理无效的 currentGalleryId:", currentId);
+                        localStorage.removeItem('currentGalleryId');
+                        localStorage.removeItem('lastLoadedGallery');
+                        delete (window as any).currentGalleryId;
+                    }
+                } catch (error) {
+                    console.error("清理检查失败:", error);
+                }
+            }
+        };
+
+        cleanupInvalidGalleryIds();
+    }, []);
 
     return (
         <UIContext.Provider value={{

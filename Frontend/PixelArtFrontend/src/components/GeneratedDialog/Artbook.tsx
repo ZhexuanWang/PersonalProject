@@ -7,7 +7,6 @@ interface ArtbookProps {
     onDownload: (url: string) => void;
     onDelete: (index: number) => void;
     currentPrompt?: string; // 添加当前提示词
-    currentConversationId?: string; // 这个从 InputArea 传递过来
 }
 
 const Artbook: React.FC<ArtbookProps> = ({    images,
@@ -15,38 +14,10 @@ const Artbook: React.FC<ArtbookProps> = ({    images,
                                              onDownload,
                                              onDelete,
                                              currentPrompt,
-                                             currentConversationId // 这个从 InputArea 传递过来
                                          }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loadedImages, setLoadedImages] = useState<string[]>(images);
     const galleryRef = useRef<HTMLDivElement | null>(null);
-
-    const [conversationId, setConversationId] = useState<string | undefined>(currentConversationId);
-    const [isExistingConversation, setIsExistingConversation] = useState(false);
-
-    // 检查对话是否存在
-    useEffect(() => {
-        const checkConversationExists = () => {
-            if (!conversationId) {
-                setIsExistingConversation(false);
-                return;
-            }
-
-            const saved = localStorage.getItem('galleryConversations');
-            if (saved) {
-                try {
-                    const conversations = JSON.parse(saved);
-                    const exists = conversations.some((conv: any) => conv.id === conversationId);
-                    console.log("对话存在检查:", exists ? "已存在" : "不存在");
-                    setIsExistingConversation(exists);
-                } catch (error) {
-                    console.error("检查对话失败:", error);
-                }
-            }
-        };
-
-        checkConversationExists();
-    }, [conversationId]);
 
     // 保存当前画廊的函数
     const handleSaveGallery = () => {
@@ -74,7 +45,7 @@ const Artbook: React.FC<ArtbookProps> = ({    images,
 
         // 调用全局的保存函数（来自 Sidebar）
         if (typeof (window as any).saveCurrentGallery === 'function') {
-            const saved = (window as any).saveCurrentGallery(images, currentPrompt,conversationId);
+            const saved = (window as any).saveCurrentGallery(images, currentPrompt);
             if (saved) {
                 alert("✅ Gallery saved successfully!");
             } else {

@@ -7,9 +7,7 @@
     <list default="true" id="379d524d-72c4-4f06-a054-0deef26d4f39" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/Artbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/GeneratedDialog/Artbook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/InputArea/InputArea.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/components/Sidebar/Sidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/contexts/UIContext/UIContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Frontend/PixelArtFrontend/src/contexts/UIContext/UIContext.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +96,7 @@
       <workItem from="1765781770253" duration="19298000" />
       <workItem from="1765997015070" duration="3672000" />
       <workItem from="1766660819009" duration="1928000" />
+      <workItem from="1768212029030" duration="1911000" />
     </task>
     <servers />
   </component>

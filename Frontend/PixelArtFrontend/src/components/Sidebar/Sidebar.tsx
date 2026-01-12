@@ -34,15 +34,21 @@ const Sidebar: React.FC = () => {
         conversations,
         setConversations,
         setShowDialog,
-        setHasGenerated
+        setHasGenerated,
     } = useUIContext();
 
+    const [currentConversationId, setCurrentConversationId] = useState<string | undefined>(() => {
+        // 从 localStorage 恢复上次的对话ID
+        return localStorage.getItem('currentGalleryId') || undefined;
+    });
+
     // Sidebar.tsx 中的 saveCurrentGallery 函数
-    const saveCurrentGallery = (images: string[], prompt?: string, targetConversationId?: string) => {
+    const saveCurrentGallery = (images: string[], prompt?: string) => {
         console.log("=== saveCurrentGallery 调用 ===");
-        console.log("目标对话ID:", targetConversationId);
-        console.log("图片数量:", images.length);
-        console.log("提示词:", prompt);
+        console.log("当前选中的 currentConversationId:", currentConversationId);
+        console.log("localStorage currentGalleryId:", localStorage.getItem('currentGalleryId'));
+        // console.log("图片数量:", images.length);
+        // console.log("提示词:", prompt);
 
         if (!isLoggedIn) {
             alert("Please login to save galleries");
@@ -64,33 +70,11 @@ const Sidebar: React.FC = () => {
             updatedAt: Date
         } | Conversation)[];
 
-        if (targetConversationId) {
-            // 关键：如果提供了ID，但对话已被删除，应该清理状态并创建新对话
-            if (targetConversationId) {
-                const conversationExists = conversations.some(conv => conv.id === targetConversationId);
-                if (!conversationExists) {
-                    console.warn("对话不存在，可能已被删除，清理状态并创建新对话");
-
-                    // 清理无效的ID
-                    if (localStorage.getItem('currentGalleryId') === targetConversationId) {
-                        localStorage.removeItem('currentGalleryId');
-                    }
-                    if ((window as any).currentGalleryId === targetConversationId) {
-                        delete (window as any).currentGalleryId;
-                    }
-
-                    // 通知清理
-                    window.dispatchEvent(new CustomEvent('clearCurrentGallery'));
-
-                    // 创建新对话（不使用已删除的ID）
-                    return saveCurrentGallery(images, prompt); // 递归调用，不传递ID
-                }
-            }
-
+        if (currentConversationId) {
             // 更新现有对话
-            console.log("更新现有对话:", targetConversationId);
+            // console.log("更新现有对话:", currentConversationId);
             updatedConversations = conversations.map(conv => {
-                if (conv.id === targetConversationId) {
+                if (conv.id === currentConversationId) {
                     return {
                         ...conv,
                         images: [...images], // 更新图片
@@ -103,7 +87,7 @@ const Sidebar: React.FC = () => {
             });
         } else {
             // 创建新对话
-            console.log("创建新对话");
+            // console.log("创建新对话");
             const newId = generateUniqueId();
             const newConversation: Conversation = {
                 id: newId,
@@ -119,13 +103,13 @@ const Sidebar: React.FC = () => {
             updatedConversations = [newConversation, ...conversations];
         }
 
-        console.log("更新后的对话列表:", updatedConversations);
+        // console.log("更新后的对话列表:", updatedConversations);
 
         // 保存到状态和 localStorage
         setConversations(updatedConversations);
         localStorage.setItem('galleryConversations', JSON.stringify(updatedConversations));
 
-        alert(targetConversationId ? "✅ Gallery updated!" : "✅ Gallery saved successfully!");
+        alert(currentConversationId ? "✅ Gallery updated!" : "✅ Gallery saved successfully!");
         return true;
     };
 
@@ -136,10 +120,12 @@ const Sidebar: React.FC = () => {
 
     // 加载画廊对话
     const loadGalleryConversation = (conversation: Conversation) => {
-        console.log("=== 加载对话 ===");
-        console.log("对话:", conversation);
-        console.log("图片数组:", conversation.images);
-        console.log("图片数量:", conversation.images?.length);
+        localStorage.setItem('currentGalleryId', conversation.id); // 保存到 localStorage
+        setCurrentConversationId(conversation.id);
+        // console.log("=== 加载对话 ===");
+        // console.log("对话:", conversation);
+        // console.log("图片数组:", conversation.images);
+        // console.log("图片数量:", conversation.images?.length);
 
         // if (!conversation.images || conversation.images.length === 0) {
         //     alert("This gallery has no images!");
@@ -167,7 +153,7 @@ const Sidebar: React.FC = () => {
             // 关键：如果删除的是当前正在查看的对话，清理相关状态
             const currentGalleryId = localStorage.getItem('currentGalleryId');
             if (currentGalleryId === id) {
-                console.log("删除的是当前对话，清理状态");
+                // console.log("删除的是当前对话，清理状态");
                 cleanupCurrentGalleryState();
             }
 
@@ -177,25 +163,26 @@ const Sidebar: React.FC = () => {
 
     // 添加调试日志
     useEffect(() => {
-        console.log("=== Sidebar 对话状态 ===");
-        console.log("conversations 长度:", conversations.length);
-        console.log("conversations 内容:", conversations);
+        // console.log("=== Sidebar 对话状态 ===");
+        // console.log("conversations 长度:", conversations.length);
+        // console.log("conversations 内容:", conversations);
 
         // 检查 localStorage
         const saved = localStorage.getItem('galleryConversations');
-        console.log("localStorage galleryConversations:", saved);
-        console.log("localStorage currentGalleryId:", localStorage.getItem('currentGalleryId'));
+        // console.log("localStorage galleryConversations:", saved);
+        // console.log("localStorage currentGalleryId:", localStorage.getItem('currentGalleryId'));
+        // console.log("currentConversationId: "+currentConversationId);
 
         if (conversations.length === 0 && saved) {
             console.warn("⚠️ conversations 为空但 localStorage 有数据！");
             try {
                 const parsed = JSON.parse(saved);
-                console.log("解析后的数据:", parsed);
+                // console.log("解析后的数据:", parsed);
             } catch (error) {
-                console.error("解析失败:", error);
+                // console.error("解析失败:", error);
             }
         }
-    }, [conversations]);
+    }, [conversations, currentConversationId]);
 
     // 暴露保存函数到全局，让 InputArea 可以调用
     React.useEffect(() => {
@@ -215,26 +202,29 @@ const Sidebar: React.FC = () => {
         // 清理当前状态
         cleanupCurrentGalleryState();
 
-        // 创建新对话
-        const newId = generateUniqueId();
-        const newConversation: Conversation = {
-            id: newId,
-            title: "Gallery " + (conversations.length+1),
-            images: [],
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            isNew: true
-        };
+        // // 创建新对话
+        // const newId = generateUniqueId();
+        // const newConversation: Conversation = {
+        //     id: newId,
+        //     title: "Gallery " + (conversations.length+1),
+        //     images: [],
+        //     createdAt: new Date(),
+        //     updatedAt: new Date(),
+        //     isNew: true
+        // };
+        //
+        // // 保存到对话列表
+        // const updatedConversations = [newConversation, ...conversations];
+        // setConversations(updatedConversations);
+        // localStorage.setItem('galleryConversations', JSON.stringify(updatedConversations));
+        //
+        // // 加载这个新对话
+        // loadGalleryConversation(newConversation);
+        //
+        // console.log("✅ 创建新对话，ID:", newId);
 
-        // 保存到对话列表
-        const updatedConversations = [newConversation, ...conversations];
-        setConversations(updatedConversations);
-        localStorage.setItem('galleryConversations', JSON.stringify(updatedConversations));
-
-        // 加载这个新对话
-        loadGalleryConversation(newConversation);
-
-        console.log("✅ 创建新对话，ID:", newId);
+        //清空currentComversationId后直接关闭sidebar并居中inputArea
+        setShowSidebar(false);
     };
 
     // 清理当前画廊状态的函数

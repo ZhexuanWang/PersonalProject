@@ -101,6 +101,8 @@ const Sidebar: React.FC = () => {
             };
             console.log("newConversation.id: "+newConversation.id);
             updatedConversations = [newConversation, ...conversations];
+            localStorage.setItem("currentGalleryId", newId);
+            setCurrentConversationId(newId);
         }
 
         // console.log("更新后的对话列表:", updatedConversations);

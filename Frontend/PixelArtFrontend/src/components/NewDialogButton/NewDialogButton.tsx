@@ -9,7 +9,6 @@ const NewDialogButton: React.FC = () => {
         setShowSidebar,
         setHasGenerated,
         requestTokenRef,
-        setConversations
     } = useUIContext();
 
     const handleNewDialog = () => {
@@ -17,10 +16,6 @@ const NewDialogButton: React.FC = () => {
         setShowSidebar(false);
         setHasGenerated(false);
         requestTokenRef.current += 1;
-        setConversations((prev) => [
-            ...prev,
-            `Conversation ${prev.length + 1}`,
-        ]);
     };
 
     return (

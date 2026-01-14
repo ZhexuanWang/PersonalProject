@@ -78,11 +78,11 @@ const InputArea: React.FC = () => {
             // 解构新格式的数据
             const { images, title, prompt, id } = event.detail;
 
-            console.log("加载的画廊 ID:", id);
-            console.log("标题:", title);
-            console.log("提示词:", prompt);
-            console.log("图片数量:", images?.length);
-            console.log("图片内容:", images);
+            // console.log("加载的画廊 ID:", id);
+            // console.log("标题:", title);
+            // console.log("提示词:", prompt);
+            // console.log("图片数量:", images?.length);
+            // console.log("图片内容:", images);
 
             // 验证数据
             if (!images || !Array.isArray(images)) {
@@ -152,7 +152,6 @@ const InputArea: React.FC = () => {
                         onDownload={handleDownload}
                         onDelete={handleDelete}
                         currentPrompt={prompt}
-                        currentConversationId={currentConversationId}
                     />
                 </div>,
                 document.body

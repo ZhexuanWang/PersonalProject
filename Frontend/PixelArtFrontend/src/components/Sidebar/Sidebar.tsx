@@ -44,9 +44,9 @@ const Sidebar: React.FC = () => {
 
     // Sidebar.tsx 中的 saveCurrentGallery 函数
     const saveCurrentGallery = (images: string[], prompt?: string) => {
-        console.log("=== saveCurrentGallery 调用 ===");
-        console.log("当前选中的 currentConversationId:", currentConversationId);
-        console.log("localStorage currentGalleryId:", localStorage.getItem('currentGalleryId'));
+        // console.log("=== saveCurrentGallery 调用 ===");
+        // console.log("当前选中的 currentConversationId:", currentConversationId);
+        // console.log("localStorage currentGalleryId:", localStorage.getItem('currentGalleryId'));
         // console.log("图片数量:", images.length);
         // console.log("提示词:", prompt);
 
@@ -70,7 +70,7 @@ const Sidebar: React.FC = () => {
             updatedAt: Date
         } | Conversation)[];
 
-        if (currentConversationId) {
+        if (localStorage.getItem('currentGalleryId') || undefined) {
             // 更新现有对话
             // console.log("更新现有对话:", currentConversationId);
             updatedConversations = conversations.map(conv => {
@@ -383,17 +383,17 @@ const Sidebar: React.FC = () => {
                                 </ul>
                             )}
 
-                            {/* 原有的对话功能保留 */}
-                            <h4 style={{ marginTop: '30px', marginBottom: '10px' }}>Saved Conversations</h4>
-                            <ul>
-                                {conversations.length === 0 ? (
-                                    <li>No conversations yet</li>
-                                ) : (
-                                    conversations.map((conv, idx) => (
-                                        <li key={idx}>{conv.title}</li>
-                                    ))
-                                )}
-                            </ul>
+                            {/*/!* 原有的对话功能保留 *!/*/}
+                            {/*<h4 style={{ marginTop: '30px', marginBottom: '10px' }}>Saved Conversations</h4>*/}
+                            {/*<ul>*/}
+                            {/*    {conversations.length === 0 ? (*/}
+                            {/*        <li>No conversations yet</li>*/}
+                            {/*    ) : (*/}
+                            {/*        conversations.map((conv, idx) => (*/}
+                            {/*            <li key={idx}>{conv.title}</li>*/}
+                            {/*        ))*/}
+                            {/*    )}*/}
+                            {/*</ul>*/}
                         </>
                     )}
                 </div>

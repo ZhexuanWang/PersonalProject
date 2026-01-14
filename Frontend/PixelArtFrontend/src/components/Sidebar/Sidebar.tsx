@@ -187,7 +187,7 @@ const Sidebar: React.FC = () => {
     }, [conversations, currentConversationId]);
 
     // 暴露保存函数到全局，让 InputArea 可以调用
-    React.useEffect(() => {
+    useEffect(() => {
         (window as any).saveCurrentGallery = saveCurrentGallery;
         return () => {
             delete (window as any).saveCurrentGallery;

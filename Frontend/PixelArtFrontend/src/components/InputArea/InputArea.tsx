@@ -24,23 +24,71 @@ const InputArea: React.FC = () => {
         setHasGenerated(true);
         setLoading(true);
         setError(null);
-        // 不再清空 images 数组，保留历史记录
 
         try {
-            const response = await fetch("/api/generate", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({prompt}),
-            });
+            if (window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1') {
 
-            if (!response.ok) throw new Error("Image generation failed");
+                console.log("本地开发：使用模拟 API");
 
-            const data = await response.json();
+                await new Promise(resolve => setTimeout(resolve, 1500));
 
-            if (token === requestTokenRef.current) {
-                // 将新图片添加到数组中，而不是替换
-                setImages(prev => [...prev, data.imageUrl]);
-                setShowDialog(true);
+                const MOCK_IMAGES = [
+                    "https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=800&auto=format&fit=crop", // 书籍
+                    "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop", // 艺术
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop", // 人物
+                    "https://images.unsplash.com/photo-1519681393784-d120267933ba?w-800&auto=format&fit=crop", // 风景
+                    "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&auto=format&fit=crop", // 猫
+                    "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=800&auto=format&fit=crop", // 工作台
+                    "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=800&auto=format&fit=crop", // 建筑
+                    "https://images.unsplash.com/photo-1579546929662-711aa81148cf?w=800&auto=format&fit=crop", // 渐变背景
+                    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&fit=crop", // 山脉
+                    "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&auto=format&fit=crop", // 冲浪
+                    "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=800&auto=format&fit=crop", // 城市夜景
+                    "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&auto=format&fit=crop", // 抽象艺术
+                    "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?w=800&auto=format&fit=crop", // 森林
+                    "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=800&auto=format&fit=crop", // 山间小路
+                    "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&auto=format&fit=crop", // 星空
+                ];
+
+                const randomIndex = Math.floor(Math.random() * MOCK_IMAGES.length);
+                const imageUrl = MOCK_IMAGES[randomIndex];
+
+                const mockData = {
+                    imageUrl: imageUrl,
+                    imageId: `mock_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    promptReceived: prompt,
+                    seed: Math.floor(Math.random() * 1000000),
+                    width: 800,
+                    height: 600,
+                    timestamp: new Date().toISOString(),
+                    model: "mock-dalle-3",
+                };
+
+                // console.log("模拟响应:", mockData);
+
+                if (token === requestTokenRef.current) {
+                    setImages(prev => [...prev, mockData.imageUrl]);
+                    setShowDialog(true);
+                }
+
+            } else {
+                // 生产环境：调用真实 Vercel Function
+                const response = await fetch("/api/generate", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({prompt}),
+                });
+
+                if (!response.ok) throw new Error("Image generation failed");
+
+                const data = await response.json();
+
+                if (token === requestTokenRef.current) {
+                    // 将新图片添加到数组中，而不是替换
+                    setImages(prev => [...prev, data.imageUrl]);
+                    setShowDialog(true);
+                }
             }
         } catch (err: any) {
             if (token === requestTokenRef.current) {
